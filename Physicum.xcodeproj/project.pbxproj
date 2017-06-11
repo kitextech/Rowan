@@ -8,20 +8,30 @@
 
 /* Begin PBXBuildFile section */
 		22D57CF31EE86457006CC1DB /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 22D57CF21EE86457006CC1DB /* AppDelegate.swift */; };
-		22D57CF51EE86457006CC1DB /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 22D57CF41EE86457006CC1DB /* ViewController.swift */; };
+		22D57CF51EE86457006CC1DB /* TraceViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 22D57CF41EE86457006CC1DB /* TraceViewController.swift */; };
 		22D57CF81EE86457006CC1DB /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 22D57CF61EE86457006CC1DB /* Main.storyboard */; };
 		22D57CFA1EE86457006CC1DB /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 22D57CF91EE86457006CC1DB /* Assets.xcassets */; };
 		22D57CFD1EE86457006CC1DB /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 22D57CFB1EE86457006CC1DB /* LaunchScreen.storyboard */; };
+		22D57D091EE86508006CC1DB /* Quaternion.swift in Sources */ = {isa = PBXBuildFile; fileRef = 22D57D041EE86507006CC1DB /* Quaternion.swift */; };
+		22D57D0A1EE86508006CC1DB /* Vector.swift in Sources */ = {isa = PBXBuildFile; fileRef = 22D57D051EE86507006CC1DB /* Vector.swift */; };
+		22D57D0B1EE86508006CC1DB /* Point.swift in Sources */ = {isa = PBXBuildFile; fileRef = 22D57D061EE86507006CC1DB /* Point.swift */; };
+		22D57D0C1EE86508006CC1DB /* TraceView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 22D57D071EE86507006CC1DB /* TraceView.swift */; };
+		22D57D0D1EE86508006CC1DB /* Physics.swift in Sources */ = {isa = PBXBuildFile; fileRef = 22D57D081EE86508006CC1DB /* Physics.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
 		22D57CEF1EE86457006CC1DB /* Physicum.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Physicum.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		22D57CF21EE86457006CC1DB /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
-		22D57CF41EE86457006CC1DB /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
+		22D57CF41EE86457006CC1DB /* TraceViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TraceViewController.swift; sourceTree = "<group>"; };
 		22D57CF71EE86457006CC1DB /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
 		22D57CF91EE86457006CC1DB /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		22D57CFC1EE86457006CC1DB /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		22D57CFE1EE86457006CC1DB /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		22D57D041EE86507006CC1DB /* Quaternion.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = Quaternion.swift; path = ../../KiteVectors/KiteVectorPlayground.playground/Sources/Quaternion.swift; sourceTree = "<group>"; };
+		22D57D051EE86507006CC1DB /* Vector.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = Vector.swift; path = ../../KiteVectors/KiteVectorPlayground.playground/Sources/Vector.swift; sourceTree = "<group>"; };
+		22D57D061EE86507006CC1DB /* Point.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = Point.swift; path = ../../KiteVectors/KiteVectorPlayground.playground/Sources/Point.swift; sourceTree = "<group>"; };
+		22D57D071EE86507006CC1DB /* TraceView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = TraceView.swift; path = ../../KiteVectors/KiteVectorPlayground.playground/Sources/TraceView.swift; sourceTree = "<group>"; };
+		22D57D081EE86508006CC1DB /* Physics.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = Physics.swift; path = ../../KiteVectors/KiteVectorPlayground.playground/Sources/Physics.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -54,8 +64,13 @@
 		22D57CF11EE86457006CC1DB /* Physicum */ = {
 			isa = PBXGroup;
 			children = (
+				22D57D081EE86508006CC1DB /* Physics.swift */,
+				22D57D061EE86507006CC1DB /* Point.swift */,
+				22D57D041EE86507006CC1DB /* Quaternion.swift */,
+				22D57CF41EE86457006CC1DB /* TraceViewController.swift */,
+				22D57D071EE86507006CC1DB /* TraceView.swift */,
+				22D57D051EE86507006CC1DB /* Vector.swift */,
 				22D57CF21EE86457006CC1DB /* AppDelegate.swift */,
-				22D57CF41EE86457006CC1DB /* ViewController.swift */,
 				22D57CF61EE86457006CC1DB /* Main.storyboard */,
 				22D57CF91EE86457006CC1DB /* Assets.xcassets */,
 				22D57CFB1EE86457006CC1DB /* LaunchScreen.storyboard */,
@@ -135,7 +150,12 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				22D57CF51EE86457006CC1DB /* ViewController.swift in Sources */,
+				22D57D0C1EE86508006CC1DB /* TraceView.swift in Sources */,
+				22D57D091EE86508006CC1DB /* Quaternion.swift in Sources */,
+				22D57D0B1EE86508006CC1DB /* Point.swift in Sources */,
+				22D57CF51EE86457006CC1DB /* TraceViewController.swift in Sources */,
+				22D57D0A1EE86508006CC1DB /* Vector.swift in Sources */,
+				22D57D0D1EE86508006CC1DB /* Physics.swift in Sources */,
 				22D57CF31EE86457006CC1DB /* AppDelegate.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -269,6 +289,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				DEVELOPMENT_TEAM = 7DR7SL32UW;
 				INFOPLIST_FILE = Physicum/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = KiteX.Physicum;
@@ -282,6 +303,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				DEVELOPMENT_TEAM = 7DR7SL32UW;
 				INFOPLIST_FILE = Physicum/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = KiteX.Physicum;
