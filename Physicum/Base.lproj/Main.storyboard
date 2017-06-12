@@ -42,11 +42,6 @@
                         <action selector="didPan:" destination="BYZ-38-t0r" id="pD7-gz-1oi"/>
                     </connections>
                 </panGestureRecognizer>
-                <panGestureRecognizer minimumNumberOfTouches="2" maximumNumberOfTouches="2" id="OQy-6c-2nM">
-                    <connections>
-                        <action selector="didDoublePan:" destination="BYZ-38-t0r" id="2PQ-rY-RB0"/>
-                    </connections>
-                </panGestureRecognizer>
             </objects>
             <point key="canvasLocation" x="-173" y="-49"/>
         </scene>

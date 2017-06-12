@@ -10,20 +10,25 @@ import UIKit
 
 class TraceViewController: UIViewController {
     @IBOutlet var traceView: TraceView!
-
-    var xval: Scalar = 25
-    var yval: Scalar = 0
+    private let newton = Newton()
+    private var displayLink: CADisplayLink?
 
     override func viewDidLoad() {
         super.viewDidLoad()
-        // Do any additional setup after loading the view, typically from a nib.
 
-//        let v = VectorDrawable(.red, at: .origin) { self.xval*e_x + self.yval*e_z }
-//        let u = VectorDrawable(.blue, at: .origin) { 25*e_z }
-//        let w = VectorDrawable(.green, at: .origin) { (1/25)*v.vector × u.vector }
-//        traceView.add(v)
-//        traceView.add(u)
-//        traceView.add(w)
+        var ball = BallDrawable()
+        ball.position = Vector(0, 0, -25)
+        traceView.add(ball)
+
+        let ballObject = Object(m: 10, r: ball.position, v: 10*e_y, a: .zero)
+        newton.add(object: ballObject, id: ball.id)
+//        newton.add(force: gravity, id: ball.id)
+        newton.add(force: radial, id: ball.id)
+
+        traceView.add(SphereDrawable())
+        traceView.add(BallDrawable())
+
+        startDisplayLink()
     }
     
     @IBAction func didPinch(_ sender: UIPinchGestureRecognizer) {
@@ -32,30 +37,47 @@ class TraceViewController: UIViewController {
     }
 
     @IBAction func didPan(_ sender: UIPanGestureRecognizer) {
-//        let delta = 1/500*sender.translation(in: view)
-//        traceView.rotate(by: (Scalar(delta.x), Scalar(delta.y)))
-//        sender.setTranslation(.zero, in: view)
-
-        let delta = 1/20*sender.translation(in: view)
-        xval -= Scalar(delta.y)
-        yval += Scalar(delta.x)
-
+        let delta = 1/500*sender.translation(in: view)
+        traceView.rotate(by: (Scalar(delta.x), Scalar(delta.y)))
         sender.setTranslation(.zero, in: view)
-        print("changed val: (\(xval):\(yval))")
+    }
 
-        traceView.rotate(by: (0, 0))
+    // MARK: - displayLink
+
+    private func startDisplayLink() {
+        stopDisplayLink()
+
+//        startTime = CACurrentMediaTime()
+
+        displayLink = CADisplayLink(target: self, selector: #selector(step))
+        displayLink?.add(to: .main, forMode: .commonModes)
+    }
+
+    @objc func step(link: CADisplayLink) {
+//        let elapsed = CACurrentMediaTime() - startTime
+//
+//        guard elapsed < animLength else {
+//            stopDisplayLink()
+//            return
+//        }
+//
+
+        updatePhysics(link.targetTimestamp - link.timestamp)
+    }
+
+    private func updatePhysics(_ elapsed: TimeInterval) {
+        newton.iterate(elapsed)
+        for (id, object) in newton.objects {
+            traceView.moveDrawable(id: id, pos: object.r)
+        }
         traceView.setNeedsDisplay()
     }
 
-    @IBAction func didDoublePan(_ sender: UIPanGestureRecognizer) {
-        let delta = 1/500*sender.translation(in: view)
-        xval += Scalar(delta.x)
-        yval += Scalar(delta.y)
-
-        sender.setTranslation(.zero, in: view)
-        print("changed xval: \(xval)")
-
-//        traceView.setNeedsDisplay()
+    // invalidate display link if it's non-nil, then set to nil
+    func stopDisplayLink() {
+        displayLink?.invalidate()
+        displayLink = nil
     }
+
 }
 
