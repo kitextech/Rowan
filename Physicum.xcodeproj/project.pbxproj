@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		221CE0A11EF2C10B009AA61F /* Matrix.swift in Sources */ = {isa = PBXBuildFile; fileRef = 221CE0A01EF2C10A009AA61F /* Matrix.swift */; };
 		22D57CF31EE86457006CC1DB /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 22D57CF21EE86457006CC1DB /* AppDelegate.swift */; };
 		22D57CF51EE86457006CC1DB /* TraceViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 22D57CF41EE86457006CC1DB /* TraceViewController.swift */; };
 		22D57CF81EE86457006CC1DB /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 22D57CF61EE86457006CC1DB /* Main.storyboard */; };
@@ -20,6 +21,7 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		221CE0A01EF2C10A009AA61F /* Matrix.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = Matrix.swift; path = ../../VisualKite/VisualKite/Matrix.swift; sourceTree = "<group>"; };
 		22D57CEF1EE86457006CC1DB /* Physicum.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Physicum.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		22D57CF21EE86457006CC1DB /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		22D57CF41EE86457006CC1DB /* TraceViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TraceViewController.swift; sourceTree = "<group>"; };
@@ -64,14 +66,15 @@
 		22D57CF11EE86457006CC1DB /* Physicum */ = {
 			isa = PBXGroup;
 			children = (
-				22D57D081EE86508006CC1DB /* Physics.swift */,
-				22D57D061EE86507006CC1DB /* Point.swift */,
-				22D57D041EE86507006CC1DB /* Quaternion.swift */,
 				22D57CF41EE86457006CC1DB /* TraceViewController.swift */,
 				22D57D071EE86507006CC1DB /* TraceView.swift */,
-				22D57D051EE86507006CC1DB /* Vector.swift */,
 				22D57CF21EE86457006CC1DB /* AppDelegate.swift */,
 				22D57CF61EE86457006CC1DB /* Main.storyboard */,
+				22D57D081EE86508006CC1DB /* Physics.swift */,
+				22D57D061EE86507006CC1DB /* Point.swift */,
+				22D57D051EE86507006CC1DB /* Vector.swift */,
+				22D57D041EE86507006CC1DB /* Quaternion.swift */,
+				221CE0A01EF2C10A009AA61F /* Matrix.swift */,
 				22D57CF91EE86457006CC1DB /* Assets.xcassets */,
 				22D57CFB1EE86457006CC1DB /* LaunchScreen.storyboard */,
 				22D57CFE1EE86457006CC1DB /* Info.plist */,
@@ -111,6 +114,7 @@
 				TargetAttributes = {
 					22D57CEE1EE86457006CC1DB = {
 						CreatedOnToolsVersion = 9.0;
+						ProvisioningStyle = Automatic;
 					};
 				};
 			};
@@ -154,6 +158,7 @@
 				22D57D091EE86508006CC1DB /* Quaternion.swift in Sources */,
 				22D57D0B1EE86508006CC1DB /* Point.swift in Sources */,
 				22D57CF51EE86457006CC1DB /* TraceViewController.swift in Sources */,
+				221CE0A11EF2C10B009AA61F /* Matrix.swift in Sources */,
 				22D57D0A1EE86508006CC1DB /* Vector.swift in Sources */,
 				22D57D0D1EE86508006CC1DB /* Physics.swift in Sources */,
 				22D57CF31EE86457006CC1DB /* AppDelegate.swift in Sources */,
@@ -202,6 +207,8 @@
 				CLANG_WARN_ENUM_CONVERSION = YES;
 				CLANG_WARN_INFINITE_RECURSION = YES;
 				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
 				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
 				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
 				CLANG_WARN_STRICT_PROTOTYPES = YES;
@@ -257,6 +264,8 @@
 				CLANG_WARN_ENUM_CONVERSION = YES;
 				CLANG_WARN_INFINITE_RECURSION = YES;
 				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
 				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
 				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
 				CLANG_WARN_STRICT_PROTOTYPES = YES;
@@ -289,11 +298,14 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = 7DR7SL32UW;
 				INFOPLIST_FILE = Physicum/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = KiteX.Physicum;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				PROVISIONING_PROFILE_SPECIFIER = "";
 				SWIFT_VERSION = 4.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
 			};
@@ -303,11 +315,14 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = 7DR7SL32UW;
 				INFOPLIST_FILE = Physicum/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = KiteX.Physicum;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				PROVISIONING_PROFILE_SPECIFIER = "";
 				SWIFT_VERSION = 4.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
 			};
@@ -332,6 +347,7 @@
 				22D57D031EE86457006CC1DB /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
 	};
