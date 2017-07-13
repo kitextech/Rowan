@@ -13,83 +13,119 @@ class TraceViewController: UIViewController {
     private let newton = Newton()
     private var displayLink: CADisplayLink?
 
+    @IBOutlet weak var label0: UILabel!
+    @IBOutlet weak var slider0: UISlider!
+    @IBOutlet weak var slider1: UISlider!
+    @IBOutlet weak var slider2: UISlider!
+
+    private var debuIds = [UUID]()
+
     override func viewDidLoad() {
         super.viewDidLoad()
 
-        let ball1 = BallDrawable(position: 0*e_x - 30*e_z)
-        let ball2 = BallDrawable(position: 5*e_x - 30*e_z)
-        let ball3 = BallDrawable(position: 10*e_x - 30*e_z)
-        let ball4 = BallDrawable(position: 15*e_x - 30*e_z)
-        let ball5 = BallDrawable(position: 20*e_x - 30*e_z)
-        let ball6 = BallDrawable(position: 25*e_x - 30*e_z)
-        let ball7 = BallDrawable(position: 30*e_x - 30*e_z)
-        let ball8 = BallDrawable(position: 35*e_x - 30*e_z)
-        let ball9 = BallDrawable(position: 40*e_x - 30*e_z)
-        let ball10 = BallDrawable(position: 45*e_x - 30*e_z)
-
-        traceView.add(ball1)
-        traceView.add(ball2)
-        traceView.add(ball3)
-        traceView.add(ball4)
-        traceView.add(ball5)
-        traceView.add(ball6)
-        traceView.add(ball7)
-        traceView.add(ball8)
-        traceView.add(ball9)
-        traceView.add(ball10)
-
-        let ballBody1 = Body(r: ball1.position)
-        let ballBody2 = Body(m: 10, r: ball2.position)
-        let ballBody3 = Body(m: 10, r: ball3.position)
-        let ballBody4 = Body(m: 10, r: ball4.position)
-        let ballBody5 = Body(m: 10, r: ball5.position)
-        let ballBody6 = Body(m: 10, r: ball6.position)
-        let ballBody7 = Body(m: 10, r: ball7.position)
-        let ballBody8 = Body(m: 10, r: ball8.position)
-        let ballBody9 = Body(m: 10, r: ball9.position)
-        let ballBody10 = Body(m: 10, r: ball10.position) //, v: 0*e_x + 5*e_z)
-
-        newton.add(body: ballBody1, id: ball1.id)
-        newton.add(body: ballBody2, id: ball2.id)
-        newton.add(body: ballBody3, id: ball3.id)
-        newton.add(body: ballBody4, id: ball4.id)
-        newton.add(body: ballBody5, id: ball5.id)
-        newton.add(body: ballBody6, id: ball6.id)
-        newton.add(body: ballBody7, id: ball7.id)
-        newton.add(body: ballBody8, id: ball8.id)
-        newton.add(body: ballBody9, id: ball9.id)
-        newton.add(body: ballBody10, id: ball10.id)
-
-        newton.add(force: spring, id0: ball1.id, id1: ball2.id)
-        newton.add(force: spring, id0: ball2.id, id1: ball3.id)
-        newton.add(force: spring, id0: ball3.id, id1: ball4.id)
-        newton.add(force: spring, id0: ball4.id, id1: ball5.id)
-        newton.add(force: spring, id0: ball5.id, id1: ball6.id)
-        newton.add(force: spring, id0: ball6.id, id1: ball7.id)
-        newton.add(force: spring, id0: ball7.id, id1: ball8.id)
-        newton.add(force: spring, id0: ball8.id, id1: ball9.id)
-        newton.add(force: spring, id0: ball9.id, id1: ball10.id)
-
-        newton.add(force: gravity, id: ball1.id)
-        newton.add(force: gravity, id: ball2.id)
-        newton.add(force: gravity, id: ball3.id)
-        newton.add(force: gravity, id: ball4.id)
-        newton.add(force: gravity, id: ball5.id)
-        newton.add(force: gravity, id: ball6.id)
-        newton.add(force: gravity, id: ball7.id)
-        newton.add(force: gravity, id: ball8.id)
-        newton.add(force: gravity, id: ball9.id)
-        newton.add(force: gravity, id: ball10.id)
-
-//        newton.add(force: wind, id: ball.id)
-//        newton.add(force: radial, id: ball1.id)
+        func add(drawable: Drawable, m: Scalar, v: Vector = .zero, l: Vector = .zero) {
+            traceView.add(drawable)
+            let body = Body(id: drawable.id, m: m)
+            let state = State(r: drawable.position, p: m*v, q: drawable.orientation, l: l)
+            newton.add(body: body, state: state)
+        }
 
         traceView.add(SphereDrawable())
-//        traceView.add(BallDrawable())
+
+        let link1 = BoxDrawable(at: 0*e_x - 30*e_z, dx: 5, dy: 1, dz: 1)
+        let link2 = BoxDrawable(at: 5*e_x - 30*e_z, dx: 5, dy: 1, dz: 1)
+        let link3 = BoxDrawable(at: 10*e_x - 30*e_z, dx: 5, dy: 1, dz: 1)
+        let link4 = BoxDrawable(at: 15*e_x - 30*e_z, dx: 5, dy: 1, dz: 1)
+        let link5 = BoxDrawable(at: 20*e_x - 30*e_z, dx: 5, dy: 1, dz: 1)
+        let link6 = BoxDrawable(at: 25*e_x - 30*e_z, dx: 5, dy: 1, dz: 1)
+        let link7 = BoxDrawable(at: 30*e_x - 30*e_z, dx: 5, dy: 1, dz: 1)
+        let link8 = BoxDrawable(at: 35*e_x - 30*e_z, dx: 5, dy: 1, dz: 1)
+        let link9 = BoxDrawable(at: 40*e_x - 30*e_z, dx: 5, dy: 1, dz: 1)
+        let link10 = BoxDrawable(at: 45*e_x - 30*e_z, dx: 5, dy: 1, dz: 1)
+        let link11 = BoxDrawable(at: 50*e_x - 30*e_z, dx: 5, dy: 1, dz: 1)
+        let link12 = BoxDrawable(at: 55*e_x - 30*e_z, dx: 5, dy: 1, dz: 1)
+        let link13 = BoxDrawable(at: 60*e_x - 30*e_z, dx: 5, dy: 1, dz: 1)
+        let link14 = BoxDrawable(at: 65*e_x - 30*e_z, dx: 5, dy: 1, dz: 1)
+        let link15 = BoxDrawable(at: 70*e_x - 30*e_z, dx: 5, dy: 1, dz: 1)
+        let link16 = BoxDrawable(at: 75*e_x - 30*e_z, dx: 5, dy: 1, dz: 1)
+        let link17 = BoxDrawable(at: 80*e_x - 30*e_z, dx: 5, dy: 1, dz: 1)
+        let link18 = BoxDrawable(at: 85*e_x - 30*e_z, dx: 5, dy: 1, dz: 1)
+        let link19 = BoxDrawable(at: 90*e_x - 30*e_z, dx: 5, dy: 1, dz: 1)
+        let link20 = BoxDrawable(at: 95*e_x - 30*e_z, dx: 5, dy: 1, dz: 1)
+
+        let wing = KiteDrawable(at: 97.5*e_x - 30*e_z)
+
+        debuIds.append(wing.id)
+
+        let links: [Drawable] = [link1, link2, link3, link4, link5, link6, link7, link8, link9, link10, link11, link12, link13, link14, link15, link16, link17, link18, link19, link20, wing]
+
+        add(drawable: link1, m: 100000)
+        links.dropFirst().forEach { add(drawable: $0, m: 2) }
+        add(drawable: wing, m: 50)
+
+        let gravity: (State) -> Vector = { _ in 1*e_z }
+        let gravityWing: (State) -> Vector = { _ in 50*e_z }
+
+        func addUnary<S: Sequence>(to s: S, u: @escaping (State) -> Vector) where S.Element == Drawable {
+            s.forEach { newton.add(force: (.zero, $0.id, u)) }
+        }
+
+        addUnary(to: links.dropFirst().dropLast(), u: gravity)
+        newton.add(force: (2*e_z, wing.id, gravityWing))
+
+        newton.add(force: (wing.motorPoints.0, wing.id, motor0))
+        newton.add(force: (wing.motorPoints.1, wing.id, motor1))
+        newton.add(force: (wing.motorPoints.2, wing.id, motor2))
+        newton.add(force: (wing.motorPoints.3, wing.id, motor3))
+
+        func addSpring(left: Drawable, right: Drawable, offset: (Scalar, Scalar) = (-0.5, 0.5)) {
+            let dr = left.position - right.position
+            newton.add(force: (offset.0*dr, left.id, right.id, spring(l: 0, plus: true)))
+            newton.add(force: (offset.1*dr, right.id, left.id, spring(l: 0, plus: false)))
+        }
+
+        addSpring(left: link1, right: link2)
+        addSpring(left: link2, right: link3)
+        addSpring(left: link3, right: link4)
+        addSpring(left: link4, right: link5)
+        addSpring(left: link5, right: link6)
+        addSpring(left: link6, right: link7)
+        addSpring(left: link7, right: link8)
+        addSpring(left: link8, right: link9)
+        addSpring(left: link9, right: link10)
+        addSpring(left: link10, right: link11)
+        addSpring(left: link11, right: link12)
+        addSpring(left: link12, right: link13)
+        addSpring(left: link13, right: link14)
+        addSpring(left: link14, right: link15)
+        addSpring(left: link15, right: link16)
+        addSpring(left: link16, right: link17)
+        addSpring(left: link17, right: link18)
+        addSpring(left: link18, right: link19)
+        addSpring(left: link19, right: link20)
+        addSpring(left: link20, right: wing)
 
         startDisplayLink()
     }
-    
+
+    let rho: Float = -20
+
+    func motor0(x: State) -> Vector {
+        return (-100 + rho*self.slider1.value + rho*self.slider2.value)*self.slider0.value*(e_z.rotated(x.q))
+    }
+
+    func motor1(x: State) -> Vector {
+        return (-100 + rho*self.slider1.value - rho*self.slider2.value)*self.slider0.value*(e_z.rotated(x.q))
+    }
+
+    func motor2(x: State) -> Vector {
+        return (-100 - rho*self.slider1.value + rho*self.slider2.value)*self.slider0.value*(e_z.rotated(x.q))
+    }
+
+    func motor3(x: State) -> Vector {
+        return (-100 - rho*self.slider1.value - rho*self.slider2.value)*self.slider0.value*(e_z.rotated(x.q))
+    }
+
     @IBAction func didPinch(_ sender: UIPinchGestureRecognizer) {
         traceView.zoom(by: Scalar(sender.scale))
         sender.scale = 1
@@ -104,20 +140,41 @@ class TraceViewController: UIViewController {
     // MARK: - displayLink
 
     private func startDisplayLink() {
+//        let before = Date()
+//        for _ in 0...1000 {
+//            newton.step(h: 0.01)
+//        }
+//
+//        print("that took \(Date().timeIntervalSince(before)) sec")
+//        updatePhysics(0.01)
+
         stopDisplayLink()
         displayLink = CADisplayLink(target: self, selector: #selector(step))
         displayLink?.add(to: .main, forMode: .commonModes)
     }
 
     @objc func step(link: CADisplayLink) {
-        updatePhysics(6*(link.targetTimestamp - link.timestamp))
+        updatePhysics(link.targetTimestamp - link.timestamp)
     }
 
     private func updatePhysics(_ elapsed: TimeInterval) {
-//        newton.iterate(elapsed)
-        for (id, body) in newton.bodies {
-            traceView.moveDrawable(id: id, pos: body.r)
+        for _ in 0..<2 {
+            newton.step(h: 10*Scalar(elapsed))
         }
+
+        for (id, state) in newton.states {
+            traceView.moveDrawable(id: id, pos: state.r, ori: state.q)
+        }
+
+        func color(_ isAggregate: Bool, _ isTorque: Bool) -> UIColor {
+            let base: UIColor = isTorque ? .orange : .blue
+            return isAggregate ? base : base.withAlphaComponent(0.5)
+        }
+
+        traceView.debugDrawables = newton.debugEvaluation(debuIds).map { data in
+            ArrowDrawable(at: data.r, vector: data.vec, color: color(data.isAggregate, data.isTorque))
+        }
+
         traceView.setNeedsDisplay()
     }
 
