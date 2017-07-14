@@ -77,9 +77,9 @@ public struct VectorDrawable: Drawable {
 }
 
 public struct KiteDrawable: Drawable {
-    private let span: Scalar = 20*1.2
-    private let length: Scalar = 20*1
-    private let height: Scalar = 20*0.6
+    private let span: Scalar = 2*1.2
+    private let length: Scalar = 2*1
+    private let height: Scalar = 2*0.6
 
     private let tailProportion: Scalar = 0.8
     private let stabiliserProportion: Scalar = 0.8
@@ -129,14 +129,14 @@ public struct KiteDrawable: Drawable {
         lines = [wing, rightSideWing, leftSideWing, body, stabiliser, rudder]
         motorPoints = [rightSideWing.start, rightSideWing.end, leftSideWing.start, leftSideWing.end]
         spheres = [rightSideWing.start, rightSideWing.end, leftSideWing.start, leftSideWing.end, .origin]
-            .map { Sphere(center: $0, radius: 1) }
+            .map { Sphere(center: $0, radius: 0.1) }
     }
 }
 
 public struct SphereDrawable: Drawable {
     // Parameters
 
-    var radius: Scalar = 50
+    var radius: Scalar = 20
 
     // MARK: - Drawable
 
@@ -248,7 +248,7 @@ public class ArrowDrawable: Drawable {
 
     public var lines: [Line] { return [Line(start: .origin, end: vector)] }
 
-    public var spheres: [Sphere] { return [Sphere(center: vector, radius: 1)] }
+    public var spheres: [Sphere] { return [Sphere(center: vector, radius: 0.1)] }
 
     public var orientation: Quaternion = .id
 

@@ -9,6 +9,7 @@
 /* Begin PBXBuildFile section */
 		221CE0A11EF2C10B009AA61F /* Matrix.swift in Sources */ = {isa = PBXBuildFile; fileRef = 221CE0A01EF2C10A009AA61F /* Matrix.swift */; };
 		2282C9C81F03E46100BCCFB4 /* Aero.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2282C9C71F03E46100BCCFB4 /* Aero.swift */; };
+		229B4F181F1954FE001F330D /* FlightController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 229B4F171F1954FE001F330D /* FlightController.swift */; };
 		22D57CF31EE86457006CC1DB /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 22D57CF21EE86457006CC1DB /* AppDelegate.swift */; };
 		22D57CF51EE86457006CC1DB /* TraceViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 22D57CF41EE86457006CC1DB /* TraceViewController.swift */; };
 		22D57CF81EE86457006CC1DB /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 22D57CF61EE86457006CC1DB /* Main.storyboard */; };
@@ -25,6 +26,7 @@
 /* Begin PBXFileReference section */
 		221CE0A01EF2C10A009AA61F /* Matrix.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = Matrix.swift; path = ../../VisualKite/VisualKite/Matrix.swift; sourceTree = "<group>"; };
 		2282C9C71F03E46100BCCFB4 /* Aero.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Aero.swift; sourceTree = "<group>"; };
+		229B4F171F1954FE001F330D /* FlightController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = FlightController.swift; path = Physicum/FlightController.swift; sourceTree = "<group>"; };
 		22D57CEF1EE86457006CC1DB /* Physicum.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Physicum.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		22D57CF21EE86457006CC1DB /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		22D57CF41EE86457006CC1DB /* TraceViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TraceViewController.swift; sourceTree = "<group>"; };
@@ -54,6 +56,7 @@
 		22D57CE61EE86457006CC1DB = {
 			isa = PBXGroup;
 			children = (
+				229B4F171F1954FE001F330D /* FlightController.swift */,
 				22D57CF11EE86457006CC1DB /* Physicum */,
 				22D57CF01EE86457006CC1DB /* Products */,
 			);
@@ -160,6 +163,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				229B4F181F1954FE001F330D /* FlightController.swift in Sources */,
 				22D57D0C1EE86508006CC1DB /* TraceView.swift in Sources */,
 				22D57D091EE86508006CC1DB /* Quaternion.swift in Sources */,
 				22D57D0B1EE86508006CC1DB /* Point.swift in Sources */,

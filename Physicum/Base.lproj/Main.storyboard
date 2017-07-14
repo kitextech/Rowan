@@ -16,7 +16,7 @@
                         <viewControllerLayoutGuide type="top" id="y3c-jy-aDJ"/>
                         <viewControllerLayoutGuide type="bottom" id="wfy-db-euE"/>
                     </layoutGuides>
-                    <view key="view" multipleTouchEnabled="YES" contentMode="scaleToFill" id="8bC-Xf-vdC" customClass="TraceView" customModule="Physicum" customModuleProvider="target">
+                    <view key="view" multipleTouchEnabled="YES" contentMode="scaleToFill" id="8bC-Xf-vdC">
                         <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
@@ -26,31 +26,40 @@
                                 <nil key="textColor"/>
                                 <nil key="highlightedColor"/>
                             </label>
-                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="l2T-VJ-eoz">
-                                <rect key="frame" x="0.0" y="355" width="600" height="245"/>
+                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="lpY-SJ-jHE" userLabel="Trace" customClass="TraceView" customModule="Physicum" customModuleProvider="target">
+                                <rect key="frame" x="0.0" y="0.0" width="600" height="405"/>
+                                <color key="backgroundColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="custom" customColorSpace="displayP3"/>
+                                <gestureRecognizers/>
+                                <connections>
+                                    <outletCollection property="gestureRecognizers" destination="IQX-cu-aPg" appends="YES" id="LrU-eX-ORj"/>
+                                    <outletCollection property="gestureRecognizers" destination="Hj6-hl-ni8" appends="YES" id="ESO-YA-l5y"/>
+                                </connections>
+                            </view>
+                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="l2T-VJ-eoz" userLabel="SliderHolder">
+                                <rect key="frame" x="0.0" y="405" width="450" height="195"/>
                                 <subviews>
                                     <slider opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" minValue="-1" maxValue="1" translatesAutoresizingMaskIntoConstraints="NO" id="okt-Ps-ynd">
-                                        <rect key="frame" x="18" y="80" width="564" height="31"/>
+                                        <rect key="frame" x="18" y="60" width="414" height="31"/>
                                         <connections>
-                                            <action selector="didSlide2:" destination="BYZ-38-t0r" eventType="valueChanged" id="h40-4x-iXB"/>
+                                            <action selector="didSlide" destination="BYZ-38-t0r" eventType="valueChanged" id="Ui6-vd-1Pm"/>
                                         </connections>
                                     </slider>
                                     <slider opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" minValue="-1" maxValue="1" translatesAutoresizingMaskIntoConstraints="NO" id="9IU-eS-EUe" userLabel="SLi">
-                                        <rect key="frame" x="18" y="25" width="564" height="31"/>
+                                        <rect key="frame" x="18" y="15" width="414" height="31"/>
                                         <connections>
-                                            <action selector="didSlide3:" destination="BYZ-38-t0r" eventType="valueChanged" id="clZ-0P-b64"/>
+                                            <action selector="didSlide" destination="BYZ-38-t0r" eventType="valueChanged" id="Gxl-NC-dDN"/>
                                         </connections>
                                     </slider>
                                     <slider opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" minValue="0.0" maxValue="1" translatesAutoresizingMaskIntoConstraints="NO" id="XUE-hG-eVs">
-                                        <rect key="frame" x="18" y="190" width="564" height="31"/>
+                                        <rect key="frame" x="18" y="150" width="414" height="31"/>
                                         <connections>
-                                            <action selector="didSlide0:" destination="BYZ-38-t0r" eventType="valueChanged" id="9JK-Ig-Hua"/>
+                                            <action selector="didSlide" destination="BYZ-38-t0r" eventType="valueChanged" id="BvF-ua-c49"/>
                                         </connections>
                                     </slider>
                                     <slider opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" minValue="-1" maxValue="1" translatesAutoresizingMaskIntoConstraints="NO" id="lcZ-Ed-UxM">
-                                        <rect key="frame" x="18" y="135" width="564" height="31"/>
+                                        <rect key="frame" x="18" y="105" width="414" height="31"/>
                                         <connections>
-                                            <action selector="didSlide1:" destination="BYZ-38-t0r" eventType="valueChanged" id="0Fo-0Z-a3T"/>
+                                            <action selector="didSlide" destination="BYZ-38-t0r" eventType="valueChanged" id="RaG-fq-4QO"/>
                                         </connections>
                                     </slider>
                                 </subviews>
@@ -58,42 +67,114 @@
                                 <constraints>
                                     <constraint firstAttribute="trailing" secondItem="9IU-eS-EUe" secondAttribute="trailing" constant="20" id="0Vu-9F-h4V"/>
                                     <constraint firstAttribute="trailing" secondItem="XUE-hG-eVs" secondAttribute="trailing" constant="20" id="15m-cJ-cEk"/>
-                                    <constraint firstItem="XUE-hG-eVs" firstAttribute="top" secondItem="lcZ-Ed-UxM" secondAttribute="bottom" constant="25" id="1Sf-4W-S2g"/>
+                                    <constraint firstItem="XUE-hG-eVs" firstAttribute="top" secondItem="lcZ-Ed-UxM" secondAttribute="bottom" constant="15" id="1Sf-4W-S2g"/>
                                     <constraint firstAttribute="trailing" secondItem="lcZ-Ed-UxM" secondAttribute="trailing" constant="20" id="6FY-K2-rVa"/>
                                     <constraint firstItem="9IU-eS-EUe" firstAttribute="leading" secondItem="l2T-VJ-eoz" secondAttribute="leading" constant="20" id="91g-Tx-5dh"/>
-                                    <constraint firstItem="lcZ-Ed-UxM" firstAttribute="top" secondItem="okt-Ps-ynd" secondAttribute="bottom" constant="25" id="DwP-YV-weI"/>
+                                    <constraint firstItem="lcZ-Ed-UxM" firstAttribute="top" secondItem="okt-Ps-ynd" secondAttribute="bottom" constant="15" id="DwP-YV-weI"/>
                                     <constraint firstAttribute="trailing" secondItem="okt-Ps-ynd" secondAttribute="trailing" constant="20" id="EPV-s7-FsT"/>
-                                    <constraint firstAttribute="bottom" secondItem="XUE-hG-eVs" secondAttribute="bottom" constant="25" id="Few-RH-X4E"/>
-                                    <constraint firstItem="9IU-eS-EUe" firstAttribute="top" secondItem="l2T-VJ-eoz" secondAttribute="top" constant="25" id="VgT-8y-dut"/>
+                                    <constraint firstAttribute="bottom" secondItem="XUE-hG-eVs" secondAttribute="bottom" constant="15" id="Few-RH-X4E"/>
+                                    <constraint firstItem="9IU-eS-EUe" firstAttribute="top" secondItem="l2T-VJ-eoz" secondAttribute="top" constant="15" id="VgT-8y-dut"/>
                                     <constraint firstItem="XUE-hG-eVs" firstAttribute="leading" secondItem="l2T-VJ-eoz" secondAttribute="leading" constant="20" id="fZF-Rr-UNd"/>
-                                    <constraint firstItem="okt-Ps-ynd" firstAttribute="top" secondItem="9IU-eS-EUe" secondAttribute="bottom" constant="25" id="jFG-Kc-rVY"/>
+                                    <constraint firstItem="okt-Ps-ynd" firstAttribute="top" secondItem="9IU-eS-EUe" secondAttribute="bottom" constant="15" id="jFG-Kc-rVY"/>
                                     <constraint firstItem="okt-Ps-ynd" firstAttribute="leading" secondItem="l2T-VJ-eoz" secondAttribute="leading" constant="20" id="mA9-Lx-BFK"/>
                                     <constraint firstItem="lcZ-Ed-UxM" firstAttribute="leading" secondItem="l2T-VJ-eoz" secondAttribute="leading" constant="20" id="tqv-UR-KEn"/>
+                                </constraints>
+                            </view>
+                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="zl4-BM-UaO">
+                                <rect key="frame" x="450" y="405" width="150" height="195"/>
+                                <subviews>
+                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="mW1-Vj-xNS">
+                                        <rect key="frame" x="32.5" y="5" width="85" height="35"/>
+                                        <fontDescription key="fontDescription" type="system" pointSize="19"/>
+                                        <state key="normal" title="Reset pos">
+                                            <color key="titleColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="displayP3"/>
+                                        </state>
+                                        <connections>
+                                            <action selector="didTapButton:" destination="BYZ-38-t0r" eventType="touchUpInside" id="wSg-vD-S3Q"/>
+                                        </connections>
+                                    </button>
+                                    <button opaque="NO" tag="1" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="udt-YT-meT">
+                                        <rect key="frame" x="20.5" y="40" width="109" height="35"/>
+                                        <fontDescription key="fontDescription" type="system" pointSize="19"/>
+                                        <state key="normal" title="Reset sliders">
+                                            <color key="titleColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="displayP3"/>
+                                        </state>
+                                        <connections>
+                                            <action selector="didTapButton:" destination="BYZ-38-t0r" eventType="touchUpInside" id="bAH-mL-69s"/>
+                                        </connections>
+                                    </button>
+                                    <button opaque="NO" tag="2" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="8Sm-EM-LKi">
+                                        <rect key="frame" x="49" y="75" width="52" height="35"/>
+                                        <fontDescription key="fontDescription" type="system" pointSize="19"/>
+                                        <state key="normal" title="Fly up">
+                                            <color key="titleColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="displayP3"/>
+                                        </state>
+                                        <connections>
+                                            <action selector="didTapButton:" destination="BYZ-38-t0r" eventType="touchUpInside" id="X0L-CR-4WB"/>
+                                        </connections>
+                                    </button>
+                                    <button opaque="NO" tag="3" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="5rm-ae-Ybh">
+                                        <rect key="frame" x="25.5" y="110" width="99" height="35"/>
+                                        <fontDescription key="fontDescription" type="system" pointSize="19"/>
+                                        <state key="normal" title="Fly to origin">
+                                            <color key="titleColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="displayP3"/>
+                                        </state>
+                                        <connections>
+                                            <action selector="didTapButton:" destination="BYZ-38-t0r" eventType="touchUpInside" id="Xvc-he-HdF"/>
+                                        </connections>
+                                    </button>
+                                    <button opaque="NO" tag="4" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="cvx-qn-EY0">
+                                        <rect key="frame" x="37" y="145" width="76" height="35"/>
+                                        <fontDescription key="fontDescription" type="system" pointSize="19"/>
+                                        <state key="normal" title="Fly down">
+                                            <color key="titleColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="displayP3"/>
+                                        </state>
+                                        <connections>
+                                            <action selector="didTapButton:" destination="BYZ-38-t0r" eventType="touchUpInside" id="kzX-uO-J0h"/>
+                                        </connections>
+                                    </button>
+                                </subviews>
+                                <color key="backgroundColor" white="0.33333333333333331" alpha="1" colorSpace="calibratedWhite"/>
+                                <constraints>
+                                    <constraint firstItem="mW1-Vj-xNS" firstAttribute="top" secondItem="zl4-BM-UaO" secondAttribute="top" constant="5" id="25X-8J-gHM"/>
+                                    <constraint firstItem="8Sm-EM-LKi" firstAttribute="top" secondItem="udt-YT-meT" secondAttribute="bottom" id="7Eh-nH-O1g"/>
+                                    <constraint firstItem="5rm-ae-Ybh" firstAttribute="centerX" secondItem="8Sm-EM-LKi" secondAttribute="centerX" id="Jz1-y7-fsc"/>
+                                    <constraint firstAttribute="width" constant="150" id="Kfw-ws-2Jx"/>
+                                    <constraint firstItem="cvx-qn-EY0" firstAttribute="top" secondItem="5rm-ae-Ybh" secondAttribute="bottom" id="O3K-Kc-WtZ"/>
+                                    <constraint firstItem="udt-YT-meT" firstAttribute="top" secondItem="mW1-Vj-xNS" secondAttribute="bottom" id="SM1-cV-Otp"/>
+                                    <constraint firstItem="udt-YT-meT" firstAttribute="centerX" secondItem="mW1-Vj-xNS" secondAttribute="centerX" id="Xja-uj-Ock"/>
+                                    <constraint firstItem="mW1-Vj-xNS" firstAttribute="centerX" secondItem="zl4-BM-UaO" secondAttribute="centerX" id="gdK-4v-K04"/>
+                                    <constraint firstItem="5rm-ae-Ybh" firstAttribute="top" secondItem="8Sm-EM-LKi" secondAttribute="bottom" id="j1p-hU-gRC"/>
+                                    <constraint firstItem="8Sm-EM-LKi" firstAttribute="centerX" secondItem="udt-YT-meT" secondAttribute="centerX" id="nHG-hu-XJG"/>
+                                    <constraint firstItem="cvx-qn-EY0" firstAttribute="centerX" secondItem="5rm-ae-Ybh" secondAttribute="centerX" id="otg-iM-qSX"/>
                                 </constraints>
                             </view>
                         </subviews>
                         <color key="backgroundColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
                         <gestureRecognizers/>
                         <constraints>
+                            <constraint firstAttribute="trailing" secondItem="lpY-SJ-jHE" secondAttribute="trailing" id="0pt-Rp-pDi"/>
                             <constraint firstItem="l2T-VJ-eoz" firstAttribute="leading" secondItem="8bC-Xf-vdC" secondAttribute="leading" id="1V0-pT-cOM"/>
+                            <constraint firstItem="wfy-db-euE" firstAttribute="top" secondItem="zl4-BM-UaO" secondAttribute="bottom" id="5PP-av-q4D"/>
+                            <constraint firstItem="l2T-VJ-eoz" firstAttribute="top" secondItem="lpY-SJ-jHE" secondAttribute="bottom" id="7x1-36-P7b"/>
                             <constraint firstItem="wfy-db-euE" firstAttribute="top" secondItem="l2T-VJ-eoz" secondAttribute="bottom" id="ASs-br-Z46"/>
+                            <constraint firstItem="zl4-BM-UaO" firstAttribute="trailing" secondItem="lpY-SJ-jHE" secondAttribute="trailing" id="HjD-Yh-YGL"/>
+                            <constraint firstItem="lpY-SJ-jHE" firstAttribute="top" secondItem="y3c-jy-aDJ" secondAttribute="bottom" constant="-20" id="IIj-8n-kUP"/>
+                            <constraint firstItem="lpY-SJ-jHE" firstAttribute="leading" secondItem="8bC-Xf-vdC" secondAttribute="leading" id="PCV-wH-VNs"/>
+                            <constraint firstItem="zl4-BM-UaO" firstAttribute="leading" secondItem="l2T-VJ-eoz" secondAttribute="trailing" id="Xoe-71-uID"/>
                             <constraint firstItem="YKV-0d-rNa" firstAttribute="leading" secondItem="8bC-Xf-vdC" secondAttribute="leading" constant="20" id="hHH-h0-xMu"/>
-                            <constraint firstAttribute="trailing" secondItem="l2T-VJ-eoz" secondAttribute="trailing" id="o2M-wc-io3"/>
                             <constraint firstItem="YKV-0d-rNa" firstAttribute="top" secondItem="y3c-jy-aDJ" secondAttribute="bottom" id="pOw-ju-UHt"/>
+                            <constraint firstItem="zl4-BM-UaO" firstAttribute="top" secondItem="l2T-VJ-eoz" secondAttribute="top" id="vlK-jd-EKw"/>
                         </constraints>
-                        <connections>
-                            <outletCollection property="gestureRecognizers" destination="IQX-cu-aPg" appends="YES" id="1h8-CI-Vqm"/>
-                            <outletCollection property="gestureRecognizers" destination="Hj6-hl-ni8" appends="YES" id="lj4-f2-5D1"/>
-                        </connections>
                     </view>
                     <size key="freeformSize" width="600" height="600"/>
                     <connections>
                         <outlet property="label0" destination="YKV-0d-rNa" id="ioT-Ii-7e1"/>
-                        <outlet property="slider0" destination="XUE-hG-eVs" id="mBi-yP-f8S"/>
-                        <outlet property="slider1" destination="lcZ-Ed-UxM" id="FNs-vq-DXx"/>
-                        <outlet property="slider2" destination="okt-Ps-ynd" id="TAx-eI-8oe"/>
-                        <outlet property="slider3" destination="9IU-eS-EUe" id="k3Z-to-Pfr"/>
-                        <outlet property="traceView" destination="8bC-Xf-vdC" id="AqG-yq-Po0"/>
+                        <outlet property="slider0" destination="XUE-hG-eVs" id="uRb-Kb-svP"/>
+                        <outlet property="slider1" destination="lcZ-Ed-UxM" id="7dH-9x-i9F"/>
+                        <outlet property="slider2" destination="okt-Ps-ynd" id="3w0-mS-E3K"/>
+                        <outlet property="slider3" destination="9IU-eS-EUe" id="8td-K0-enz"/>
+                        <outlet property="traceView" destination="lpY-SJ-jHE" id="9en-P5-cAF"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="dkx-z0-nzr" sceneMemberID="firstResponder"/>
