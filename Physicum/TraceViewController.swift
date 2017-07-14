@@ -114,13 +114,6 @@ class TraceViewController: UIViewController {
 
     @IBAction func didSlide0(_ sender: UISlider) {
         kite.overallThrust = sender.value
-
-        func str(_ index: Int) -> String {
-            let confa = kite.configs[index].a
-            return "(\(confa.x), \(confa.y)) -> \(kite.thrust(index))"
-        }
-
-        print("\(str(0)) : \(str(1)) : \(str(2)) : \(str(3))")
     }
 
     @IBAction func didSlide1(_ sender: UISlider) {
