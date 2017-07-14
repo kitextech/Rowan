@@ -105,7 +105,7 @@ public struct KiteDrawable: Drawable {
     public var position: Vector = .origin
 
     // Output
-    public let motorPoints: (Vector, Vector, Vector, Vector)
+    public let motorPoints: [Vector]
 
     public init(at position: Vector = .origin) {
         self.position = position
@@ -127,7 +127,7 @@ public struct KiteDrawable: Drawable {
         let rudder = rudderSize*span*verticalWing + tail - 0.4*rudderSize*span*e_x
 
         lines = [wing, rightSideWing, leftSideWing, body, stabiliser, rudder]
-        motorPoints = (rightSideWing.start, rightSideWing.end, leftSideWing.start, leftSideWing.end)
+        motorPoints = [rightSideWing.start, rightSideWing.end, leftSideWing.start, leftSideWing.end]
         spheres = [rightSideWing.start, rightSideWing.end, leftSideWing.start, leftSideWing.end, .origin]
             .map { Sphere(center: $0, radius: 1) }
     }

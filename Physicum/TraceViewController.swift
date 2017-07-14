@@ -17,8 +17,11 @@ class TraceViewController: UIViewController {
     @IBOutlet weak var slider0: UISlider!
     @IBOutlet weak var slider1: UISlider!
     @IBOutlet weak var slider2: UISlider!
+    @IBOutlet weak var slider3: UISlider!
 
     private var debuIds = [UUID]()
+
+    private var kite: Kite!
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -55,13 +58,17 @@ class TraceViewController: UIViewController {
 
         let wing = KiteDrawable(at: 97.5*e_x - 30*e_z)
 
-        debuIds.append(wing.id)
-
         let links: [Drawable] = [link1, link2, link3, link4, link5, link6, link7, link8, link9, link10, link11, link12, link13, link14, link15, link16, link17, link18, link19, link20, wing]
 
         add(drawable: link1, m: 100000)
         links.dropFirst().forEach { add(drawable: $0, m: 2) }
         add(drawable: wing, m: 50)
+
+        kite = Kite(id: wing.id, configs: wing.motorPoints.map { ($0, 100, 10*($0.x*$0.y > 0 ? +1 : -1)) as MotorConfig })
+        kite.motorForces.forEach(newton.add)
+        kite.motorTorques.forEach(newton.add)
+
+        debuIds.append(wing.id)
 
         let gravity: (State) -> Vector = { _ in 1*e_z }
         let gravityWing: (State) -> Vector = { _ in 50*e_z }
@@ -72,11 +79,6 @@ class TraceViewController: UIViewController {
 
         addUnary(to: links.dropFirst().dropLast(), u: gravity)
         newton.add(force: (2*e_z, wing.id, gravityWing))
-
-        newton.add(force: (wing.motorPoints.0, wing.id, motor0))
-        newton.add(force: (wing.motorPoints.1, wing.id, motor1))
-        newton.add(force: (wing.motorPoints.2, wing.id, motor2))
-        newton.add(force: (wing.motorPoints.3, wing.id, motor3))
 
         func addSpring(left: Drawable, right: Drawable, offset: (Scalar, Scalar) = (-0.5, 0.5)) {
             let dr = left.position - right.position
@@ -108,22 +110,29 @@ class TraceViewController: UIViewController {
         startDisplayLink()
     }
 
-    let rho: Float = -20
+    // MARK: - User Actions
 
-    func motor0(x: State) -> Vector {
-        return (-100 + rho*self.slider1.value + rho*self.slider2.value)*self.slider0.value*(e_z.rotated(x.q))
+    @IBAction func didSlide0(_ sender: UISlider) {
+        kite.overallThrust = sender.value
+
+        func str(_ index: Int) -> String {
+            let confa = kite.configs[index].a
+            return "(\(confa.x), \(confa.y)) -> \(kite.thrust(index))"
+        }
+
+        print("\(str(0)) : \(str(1)) : \(str(2)) : \(str(3))")
     }
 
-    func motor1(x: State) -> Vector {
-        return (-100 + rho*self.slider1.value - rho*self.slider2.value)*self.slider0.value*(e_z.rotated(x.q))
+    @IBAction func didSlide1(_ sender: UISlider) {
+        kite.pitchThrustDelta = sender.value
     }
 
-    func motor2(x: State) -> Vector {
-        return (-100 - rho*self.slider1.value + rho*self.slider2.value)*self.slider0.value*(e_z.rotated(x.q))
+    @IBAction func didSlide2(_ sender: UISlider) {
+        kite.rollThrustDelta = sender.value
     }
 
-    func motor3(x: State) -> Vector {
-        return (-100 - rho*self.slider1.value - rho*self.slider2.value)*self.slider0.value*(e_z.rotated(x.q))
+    @IBAction func didSlide3(_ sender: UISlider) {
+        kite.yawThrustDelta = sender.value
     }
 
     @IBAction func didPinch(_ sender: UIPinchGestureRecognizer) {
@@ -183,6 +192,47 @@ class TraceViewController: UIViewController {
         displayLink?.invalidate()
         displayLink = nil
     }
-
 }
+
+typealias MotorConfig = (a: Vector, maxThrust: Scalar, maxTorque: Scalar)
+
+class Kite {
+    // Temporary Public Variables
+    public var pitchThrustDelta: Scalar = 0
+    public var rollThrustDelta: Scalar = 0
+    public var yawThrustDelta: Scalar = 0
+    public var overallThrust: Scalar = 0
+
+    // Private Variables
+    private let id: UUID
+    public let configs: [MotorConfig]
+
+    public var motorForces: [UnaryForce] {
+        return configs.enumerated().map { splatMe in let (index, config) = splatMe
+            return (config.a, id, { (-config.maxThrust*self.thrust(index)*e_z).rotated($0.q) } )
+        }
+    }
+
+    public var motorTorques: [UnaryTorque] {
+        return configs.enumerated().map { splatMe in let (index, config) = splatMe
+            return (id, { (config.maxTorque*self.thrust(index)*e_z).rotated($0.q) } )
+        }
+    }
+
+    init(id: UUID, configs: [MotorConfig]) {
+        self.id = id
+        self.configs = configs
+    }
+
+    public func thrust(_ index: Int) -> Scalar {
+        let factor: Scalar = 4
+        let a = configs[index].a
+        let pitchAdjustment = (factor + (a.x > 0 ? +1 : -1)*pitchThrustDelta)/factor
+        let rollAdjustment = (factor + (a.y > 0 ? +1 : -1)*rollThrustDelta)/factor
+        let yawAdjustment = (factor + (a.x*a.y > 0 ? +1 : -1)*yawThrustDelta)/factor
+
+        return overallThrust*pitchAdjustment*rollAdjustment*yawAdjustment
+    }
+}
+
 

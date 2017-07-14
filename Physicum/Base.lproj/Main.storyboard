@@ -27,28 +27,46 @@
                                 <nil key="highlightedColor"/>
                             </label>
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="l2T-VJ-eoz">
-                                <rect key="frame" x="0.0" y="410" width="600" height="190"/>
+                                <rect key="frame" x="0.0" y="355" width="600" height="245"/>
                                 <subviews>
                                     <slider opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" minValue="-1" maxValue="1" translatesAutoresizingMaskIntoConstraints="NO" id="okt-Ps-ynd">
-                                        <rect key="frame" x="18" y="25" width="564" height="31"/>
+                                        <rect key="frame" x="18" y="80" width="564" height="31"/>
+                                        <connections>
+                                            <action selector="didSlide2:" destination="BYZ-38-t0r" eventType="valueChanged" id="h40-4x-iXB"/>
+                                        </connections>
                                     </slider>
-                                    <slider opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" minValue="-1" maxValue="1" translatesAutoresizingMaskIntoConstraints="NO" id="XUE-hG-eVs">
-                                        <rect key="frame" x="18" y="135" width="564" height="31"/>
+                                    <slider opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" minValue="-1" maxValue="1" translatesAutoresizingMaskIntoConstraints="NO" id="9IU-eS-EUe" userLabel="SLi">
+                                        <rect key="frame" x="18" y="25" width="564" height="31"/>
+                                        <connections>
+                                            <action selector="didSlide3:" destination="BYZ-38-t0r" eventType="valueChanged" id="clZ-0P-b64"/>
+                                        </connections>
+                                    </slider>
+                                    <slider opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" minValue="0.0" maxValue="1" translatesAutoresizingMaskIntoConstraints="NO" id="XUE-hG-eVs">
+                                        <rect key="frame" x="18" y="190" width="564" height="31"/>
+                                        <connections>
+                                            <action selector="didSlide0:" destination="BYZ-38-t0r" eventType="valueChanged" id="9JK-Ig-Hua"/>
+                                        </connections>
                                     </slider>
                                     <slider opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" minValue="-1" maxValue="1" translatesAutoresizingMaskIntoConstraints="NO" id="lcZ-Ed-UxM">
-                                        <rect key="frame" x="18" y="80" width="564" height="31"/>
+                                        <rect key="frame" x="18" y="135" width="564" height="31"/>
+                                        <connections>
+                                            <action selector="didSlide1:" destination="BYZ-38-t0r" eventType="valueChanged" id="0Fo-0Z-a3T"/>
+                                        </connections>
                                     </slider>
                                 </subviews>
-                                <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
+                                <color key="backgroundColor" white="1" alpha="0.25588688380281688" colorSpace="calibratedWhite"/>
                                 <constraints>
+                                    <constraint firstAttribute="trailing" secondItem="9IU-eS-EUe" secondAttribute="trailing" constant="20" id="0Vu-9F-h4V"/>
                                     <constraint firstAttribute="trailing" secondItem="XUE-hG-eVs" secondAttribute="trailing" constant="20" id="15m-cJ-cEk"/>
                                     <constraint firstItem="XUE-hG-eVs" firstAttribute="top" secondItem="lcZ-Ed-UxM" secondAttribute="bottom" constant="25" id="1Sf-4W-S2g"/>
                                     <constraint firstAttribute="trailing" secondItem="lcZ-Ed-UxM" secondAttribute="trailing" constant="20" id="6FY-K2-rVa"/>
+                                    <constraint firstItem="9IU-eS-EUe" firstAttribute="leading" secondItem="l2T-VJ-eoz" secondAttribute="leading" constant="20" id="91g-Tx-5dh"/>
                                     <constraint firstItem="lcZ-Ed-UxM" firstAttribute="top" secondItem="okt-Ps-ynd" secondAttribute="bottom" constant="25" id="DwP-YV-weI"/>
                                     <constraint firstAttribute="trailing" secondItem="okt-Ps-ynd" secondAttribute="trailing" constant="20" id="EPV-s7-FsT"/>
                                     <constraint firstAttribute="bottom" secondItem="XUE-hG-eVs" secondAttribute="bottom" constant="25" id="Few-RH-X4E"/>
-                                    <constraint firstItem="okt-Ps-ynd" firstAttribute="top" secondItem="l2T-VJ-eoz" secondAttribute="top" constant="25" id="f6O-wa-cT1"/>
+                                    <constraint firstItem="9IU-eS-EUe" firstAttribute="top" secondItem="l2T-VJ-eoz" secondAttribute="top" constant="25" id="VgT-8y-dut"/>
                                     <constraint firstItem="XUE-hG-eVs" firstAttribute="leading" secondItem="l2T-VJ-eoz" secondAttribute="leading" constant="20" id="fZF-Rr-UNd"/>
+                                    <constraint firstItem="okt-Ps-ynd" firstAttribute="top" secondItem="9IU-eS-EUe" secondAttribute="bottom" constant="25" id="jFG-Kc-rVY"/>
                                     <constraint firstItem="okt-Ps-ynd" firstAttribute="leading" secondItem="l2T-VJ-eoz" secondAttribute="leading" constant="20" id="mA9-Lx-BFK"/>
                                     <constraint firstItem="lcZ-Ed-UxM" firstAttribute="leading" secondItem="l2T-VJ-eoz" secondAttribute="leading" constant="20" id="tqv-UR-KEn"/>
                                 </constraints>
@@ -74,6 +92,7 @@
                         <outlet property="slider0" destination="XUE-hG-eVs" id="mBi-yP-f8S"/>
                         <outlet property="slider1" destination="lcZ-Ed-UxM" id="FNs-vq-DXx"/>
                         <outlet property="slider2" destination="okt-Ps-ynd" id="TAx-eI-8oe"/>
+                        <outlet property="slider3" destination="9IU-eS-EUe" id="k3Z-to-Pfr"/>
                         <outlet property="traceView" destination="8bC-Xf-vdC" id="AqG-yq-Po0"/>
                     </connections>
                 </viewController>
