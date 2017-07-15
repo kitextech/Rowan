@@ -36,28 +36,28 @@
                                 </connections>
                             </view>
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="l2T-VJ-eoz" userLabel="SliderHolder">
-                                <rect key="frame" x="0.0" y="405" width="450" height="195"/>
+                                <rect key="frame" x="0.0" y="405" width="270" height="195"/>
                                 <subviews>
                                     <slider opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" minValue="-1" maxValue="1" translatesAutoresizingMaskIntoConstraints="NO" id="okt-Ps-ynd">
-                                        <rect key="frame" x="18" y="60" width="414" height="31"/>
+                                        <rect key="frame" x="18" y="60" width="234" height="31"/>
                                         <connections>
                                             <action selector="didSlide" destination="BYZ-38-t0r" eventType="valueChanged" id="Ui6-vd-1Pm"/>
                                         </connections>
                                     </slider>
                                     <slider opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" minValue="-1" maxValue="1" translatesAutoresizingMaskIntoConstraints="NO" id="9IU-eS-EUe" userLabel="SLi">
-                                        <rect key="frame" x="18" y="15" width="414" height="31"/>
+                                        <rect key="frame" x="18" y="15" width="234" height="31"/>
                                         <connections>
                                             <action selector="didSlide" destination="BYZ-38-t0r" eventType="valueChanged" id="Gxl-NC-dDN"/>
                                         </connections>
                                     </slider>
                                     <slider opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" minValue="0.0" maxValue="1" translatesAutoresizingMaskIntoConstraints="NO" id="XUE-hG-eVs">
-                                        <rect key="frame" x="18" y="150" width="414" height="31"/>
+                                        <rect key="frame" x="18" y="150" width="234" height="31"/>
                                         <connections>
                                             <action selector="didSlide" destination="BYZ-38-t0r" eventType="valueChanged" id="BvF-ua-c49"/>
                                         </connections>
                                     </slider>
                                     <slider opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" minValue="-1" maxValue="1" translatesAutoresizingMaskIntoConstraints="NO" id="lcZ-Ed-UxM">
-                                        <rect key="frame" x="18" y="105" width="414" height="31"/>
+                                        <rect key="frame" x="18" y="105" width="234" height="31"/>
                                         <connections>
                                             <action selector="didSlide" destination="BYZ-38-t0r" eventType="valueChanged" id="RaG-fq-4QO"/>
                                         </connections>
@@ -81,10 +81,10 @@
                                 </constraints>
                             </view>
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="zl4-BM-UaO">
-                                <rect key="frame" x="450" y="405" width="150" height="195"/>
+                                <rect key="frame" x="470" y="405" width="130" height="195"/>
                                 <subviews>
                                     <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="mW1-Vj-xNS">
-                                        <rect key="frame" x="32.5" y="5" width="85" height="35"/>
+                                        <rect key="frame" x="22.5" y="5" width="85" height="35"/>
                                         <fontDescription key="fontDescription" type="system" pointSize="19"/>
                                         <state key="normal" title="Reset pos">
                                             <color key="titleColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="displayP3"/>
@@ -94,7 +94,7 @@
                                         </connections>
                                     </button>
                                     <button opaque="NO" tag="1" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="udt-YT-meT">
-                                        <rect key="frame" x="20.5" y="40" width="109" height="35"/>
+                                        <rect key="frame" x="10.5" y="40" width="109" height="35"/>
                                         <fontDescription key="fontDescription" type="system" pointSize="19"/>
                                         <state key="normal" title="Reset sliders">
                                             <color key="titleColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="displayP3"/>
@@ -104,7 +104,7 @@
                                         </connections>
                                     </button>
                                     <button opaque="NO" tag="2" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="8Sm-EM-LKi">
-                                        <rect key="frame" x="49" y="75" width="52" height="35"/>
+                                        <rect key="frame" x="39" y="75" width="52" height="35"/>
                                         <fontDescription key="fontDescription" type="system" pointSize="19"/>
                                         <state key="normal" title="Fly up">
                                             <color key="titleColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="displayP3"/>
@@ -114,7 +114,7 @@
                                         </connections>
                                     </button>
                                     <button opaque="NO" tag="3" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="5rm-ae-Ybh">
-                                        <rect key="frame" x="25.5" y="110" width="99" height="35"/>
+                                        <rect key="frame" x="15.5" y="110" width="99" height="35"/>
                                         <fontDescription key="fontDescription" type="system" pointSize="19"/>
                                         <state key="normal" title="Fly to origin">
                                             <color key="titleColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="displayP3"/>
@@ -124,7 +124,7 @@
                                         </connections>
                                     </button>
                                     <button opaque="NO" tag="4" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="cvx-qn-EY0">
-                                        <rect key="frame" x="37" y="145" width="76" height="35"/>
+                                        <rect key="frame" x="27" y="145" width="76" height="35"/>
                                         <fontDescription key="fontDescription" type="system" pointSize="19"/>
                                         <state key="normal" title="Fly down">
                                             <color key="titleColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="displayP3"/>
@@ -139,7 +139,7 @@
                                     <constraint firstItem="mW1-Vj-xNS" firstAttribute="top" secondItem="zl4-BM-UaO" secondAttribute="top" constant="5" id="25X-8J-gHM"/>
                                     <constraint firstItem="8Sm-EM-LKi" firstAttribute="top" secondItem="udt-YT-meT" secondAttribute="bottom" id="7Eh-nH-O1g"/>
                                     <constraint firstItem="5rm-ae-Ybh" firstAttribute="centerX" secondItem="8Sm-EM-LKi" secondAttribute="centerX" id="Jz1-y7-fsc"/>
-                                    <constraint firstAttribute="width" constant="150" id="Kfw-ws-2Jx"/>
+                                    <constraint firstAttribute="width" constant="130" id="Kfw-ws-2Jx"/>
                                     <constraint firstItem="cvx-qn-EY0" firstAttribute="top" secondItem="5rm-ae-Ybh" secondAttribute="bottom" id="O3K-Kc-WtZ"/>
                                     <constraint firstItem="udt-YT-meT" firstAttribute="top" secondItem="mW1-Vj-xNS" secondAttribute="bottom" id="SM1-cV-Otp"/>
                                     <constraint firstItem="udt-YT-meT" firstAttribute="centerX" secondItem="mW1-Vj-xNS" secondAttribute="centerX" id="Xja-uj-Ock"/>
@@ -149,6 +149,16 @@
                                     <constraint firstItem="cvx-qn-EY0" firstAttribute="centerX" secondItem="5rm-ae-Ybh" secondAttribute="centerX" id="otg-iM-qSX"/>
                                 </constraints>
                             </view>
+                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="WYl-UC-w26" customClass="XYControlView" customModule="Physicum" customModuleProvider="target">
+                                <rect key="frame" x="270" y="405" width="200" height="195"/>
+                                <color key="backgroundColor" red="0.30885686528497414" green="0.30885686528497414" blue="0.30885686528497414" alpha="1" colorSpace="custom" customColorSpace="displayP3"/>
+                                <constraints>
+                                    <constraint firstAttribute="width" constant="200" id="Vnj-OT-Qgh"/>
+                                </constraints>
+                                <connections>
+                                    <action selector="didChangeXY:" destination="BYZ-38-t0r" eventType="valueChanged" id="zRM-GQ-4o6"/>
+                                </connections>
+                            </view>
                         </subviews>
                         <color key="backgroundColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
                         <gestureRecognizers/>
@@ -156,14 +166,17 @@
                             <constraint firstAttribute="trailing" secondItem="lpY-SJ-jHE" secondAttribute="trailing" id="0pt-Rp-pDi"/>
                             <constraint firstItem="l2T-VJ-eoz" firstAttribute="leading" secondItem="8bC-Xf-vdC" secondAttribute="leading" id="1V0-pT-cOM"/>
                             <constraint firstItem="wfy-db-euE" firstAttribute="top" secondItem="zl4-BM-UaO" secondAttribute="bottom" id="5PP-av-q4D"/>
+                            <constraint firstItem="wfy-db-euE" firstAttribute="top" secondItem="WYl-UC-w26" secondAttribute="bottom" id="7sj-Ca-5NJ"/>
                             <constraint firstItem="l2T-VJ-eoz" firstAttribute="top" secondItem="lpY-SJ-jHE" secondAttribute="bottom" id="7x1-36-P7b"/>
                             <constraint firstItem="wfy-db-euE" firstAttribute="top" secondItem="l2T-VJ-eoz" secondAttribute="bottom" id="ASs-br-Z46"/>
                             <constraint firstItem="zl4-BM-UaO" firstAttribute="trailing" secondItem="lpY-SJ-jHE" secondAttribute="trailing" id="HjD-Yh-YGL"/>
                             <constraint firstItem="lpY-SJ-jHE" firstAttribute="top" secondItem="y3c-jy-aDJ" secondAttribute="bottom" constant="-20" id="IIj-8n-kUP"/>
+                            <constraint firstItem="WYl-UC-w26" firstAttribute="leading" secondItem="l2T-VJ-eoz" secondAttribute="trailing" id="LYb-hc-b2P"/>
                             <constraint firstItem="lpY-SJ-jHE" firstAttribute="leading" secondItem="8bC-Xf-vdC" secondAttribute="leading" id="PCV-wH-VNs"/>
-                            <constraint firstItem="zl4-BM-UaO" firstAttribute="leading" secondItem="l2T-VJ-eoz" secondAttribute="trailing" id="Xoe-71-uID"/>
+                            <constraint firstItem="WYl-UC-w26" firstAttribute="top" secondItem="l2T-VJ-eoz" secondAttribute="top" id="V1n-gj-bw9"/>
                             <constraint firstItem="YKV-0d-rNa" firstAttribute="leading" secondItem="8bC-Xf-vdC" secondAttribute="leading" constant="20" id="hHH-h0-xMu"/>
                             <constraint firstItem="YKV-0d-rNa" firstAttribute="top" secondItem="y3c-jy-aDJ" secondAttribute="bottom" id="pOw-ju-UHt"/>
+                            <constraint firstItem="zl4-BM-UaO" firstAttribute="leading" secondItem="WYl-UC-w26" secondAttribute="trailing" id="sFQ-m4-qKg"/>
                             <constraint firstItem="zl4-BM-UaO" firstAttribute="top" secondItem="l2T-VJ-eoz" secondAttribute="top" id="vlK-jd-EKw"/>
                         </constraints>
                     </view>
@@ -175,6 +188,7 @@
                         <outlet property="slider2" destination="okt-Ps-ynd" id="3w0-mS-E3K"/>
                         <outlet property="slider3" destination="9IU-eS-EUe" id="8td-K0-enz"/>
                         <outlet property="traceView" destination="lpY-SJ-jHE" id="9en-P5-cAF"/>
+                        <outlet property="xyControl" destination="WYl-UC-w26" id="sou-0f-xe0"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="dkx-z0-nzr" sceneMemberID="firstResponder"/>
@@ -189,7 +203,7 @@
                     </connections>
                 </panGestureRecognizer>
             </objects>
-            <point key="canvasLocation" x="-230.40000000000001" y="-75.562218890554732"/>
+            <point key="canvasLocation" x="-563" y="-85"/>
         </scene>
     </scenes>
 </document>

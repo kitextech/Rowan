@@ -85,9 +85,9 @@ class HeightFlightController: FlightController {
     public func updateState(x: State) {
         guard let posSetPoint = positionSetPoint else { return }
 
-        pid.kd = (parameters.3 + 1)*5
-        pid.ki = (parameters.2 + 1)*5
-        pid.kp = (parameters.1 + 1)*5
+        pid.kd = (parameters.3 + 1)*2
+        pid.ki = (parameters.2 + 1)*2
+        pid.kp = (parameters.1 + 1)*2
         positionSetPoint?.z = -40*(parameters.0 - 0.5)
 
         let thrust = max(0, pid.step(measured: -x.r.z, setPoint: -posSetPoint.z))
@@ -96,12 +96,20 @@ class HeightFlightController: FlightController {
 
     // MARK: - Helper Variablse
 
-    private var pid = PID()
+    private var pid: PID = BasicPID()
 
     // MARK: - Helper Methods
 }
 
-struct PID {
+protocol PID {
+    var kp: Scalar { get set }
+    var ki: Scalar { get set }
+    var kd: Scalar { get set }
+
+    mutating func step(measured: Scalar, setPoint: Scalar) -> Scalar
+}
+
+struct BasicPID: PID {
     var kp: Scalar = 0
     var ki: Scalar = 0
     var kd: Scalar = 0
@@ -111,15 +119,15 @@ struct PID {
 
     mutating func step(measured: Scalar, setPoint: Scalar) -> Scalar {
         let error = setPoint - measured
-//        errorSum = errorSum + error/10000
+        errorSum = errorSum + error/10000
 
         let p = kp*error
-        let i = ki*errorSum
+        let i = -ki*errorSum
         let d = kd*(error - previousError)
 
         previousError = error
 
-//        print("E: \(error) (\(errorSum)), P: \(p), I: \(i), D: \(d)) -> \(max(p + i + d, 0))")
+        print("E: \(error) (\(errorSum)), P: \(p), I: \(i), D: \(d)) -> \(max(p + i + d, 0))")
 
         return p + i + d
     }

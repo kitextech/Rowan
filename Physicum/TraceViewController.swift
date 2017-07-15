@@ -10,6 +10,8 @@ import UIKit
 
 class TraceViewController: UIViewController {
     @IBOutlet var traceView: TraceView!
+    @IBOutlet weak var xyControl: XYControlView!
+
     private let newton = Newton()
     private var displayLink: CADisplayLink?
 
@@ -23,6 +25,8 @@ class TraceViewController: UIViewController {
 
     private var kite: Kite!
 
+    var dome = BoxDrawable(dx: 4, dy: 4, dz: 20)
+
     override func viewDidLoad() {
         super.viewDidLoad()
 
@@ -33,7 +37,8 @@ class TraceViewController: UIViewController {
             newton.add(body: body, state: state)
         }
 
-        traceView.add(SphereDrawable())
+        traceView.add(BoxDrawable(dx: 40, dy: 40, dz: 40))
+        traceView.add(dome)
 
 //        let link1 = BoxDrawable(at: 0*e_x - 30*e_z, dx: 5, dy: 1, dz: 1)
 //        let link2 = BoxDrawable(at: 5*e_x - 30*e_z, dx: 5, dy: 1, dz: 1)
@@ -65,8 +70,8 @@ class TraceViewController: UIViewController {
 //        links.dropFirst().forEach { add(drawable: $0, m: 2) }
         add(drawable: wing, m: 50)
 
-        let configs = wing.motorPoints.map { ($0, 70, 10*($0.x*$0.y > 0 ? +1 : -1)) as MotorConfig }
-        let fc = HeightFlightController(configs: configs)
+        let configs = wing.motorPoints.map { ($0, 20, 2*($0.x*$0.y > 0 ? +1 : -1)) as MotorConfig }
+        let fc = ManualFlightController(configs: configs)
         kite = Kite(id: wing.id, fc: fc)
         kite.motorForces.forEach(newton.add)
         kite.motorTorques.forEach(newton.add)
@@ -81,7 +86,7 @@ class TraceViewController: UIViewController {
         }
 
 //        addUnary(to: links.dropFirst().dropLast(), u: gravity)
-        newton.add(force: (2*e_z, wing.id, gravityWing))
+        newton.add(force: (0.2*e_z, wing.id, gravityWing))
 
         func addSpring(left: Drawable, right: Drawable, offset: (Scalar, Scalar) = (-0.5, 0.5)) {
             let dr = left.position - right.position
@@ -115,6 +120,17 @@ class TraceViewController: UIViewController {
     }
 
     // MARK: - User Actions
+
+    @IBAction func didChangeXY(_ sender: XYControlView) {
+        slider1.value = Scalar(sender.value.x)
+        slider2.value = Scalar(sender.value.y)
+        didSlide()
+
+        let axis = Vector(-sender.value.y, sender.value.x, 0)
+        let norm = axis.norm
+
+        dome.orientation = norm > 0 ? Quaternion(rotationAround: axis/norm, by: norm) : .id
+    }
 
     @IBAction func didSlide() {
         kite.fc.parameters = (slider0.value, slider1.value, slider2.value, slider3.value)
@@ -203,10 +219,16 @@ class TraceViewController: UIViewController {
     }
 
     private func resetSliders() {
-        slider3.value = -1 // P
-        slider2.value = -1 // I
-        slider1.value = -0.9 // D
-        slider0.value = 0 // 0.175
+//        slider3.value = -1 // P
+//        slider2.value = -1 // I
+//        slider1.value = -0.9 // D
+//        slider0.value = 0 // z
+//        didSlide()
+
+        slider3.value = 0 // yaw
+        slider2.value = 0 // roll
+        slider1.value = 0 // pitch
+        slider0.value = 0.175 // thrust
         didSlide()
     }
 }
@@ -236,3 +258,25 @@ class Kite {
         self.fc = fc
     }
 }
+
+class XYControlView: UIControl {
+    public var value: CGPoint = .zero
+
+    override func touchesMoved(_ touches: Set<UITouch>, with event: UIEvent?) {
+        value = 2*touches.first!.location(in: self).relative(in: bounds)
+        sendActions(for: .valueChanged)
+        setNeedsDisplay()
+    }
+
+    override func touchesEnded(_ touches: Set<UITouch>, with event: UIEvent?) {
+        value = .zero
+        sendActions(for: [.valueChanged, .editingDidEnd])
+        setNeedsDisplay()
+    }
+
+    override func draw(_ rect: CGRect) {
+        UIColor.brown.setFill()
+        UIBezierPath(ovalIn: CGRect(center: (0.5*value).absolute(in: bounds), size: CGSize(side: 50))).fill()
+    }
+}
+

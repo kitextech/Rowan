@@ -13,12 +13,6 @@ public class Tracer {
     public var scaleFactor: Scalar = 70
     public var bounds: CGRect = .unit
 
-    public func project(_ vectorSize: CGSize) -> CGSize {
-        return vectorSize
-            .scaled(by: 1/scaleFactor)
-            .absolute(in: bounds)
-    }
-
     public func pointify(_ vector: Vector) -> CGPoint {
         return vector
             .collapsed(along: projectionAxis)
@@ -31,6 +25,12 @@ public class Tracer {
             .relative(in: bounds)
             .scaled(by: scaleFactor)
             .deCollapsed(along: projectionAxis)
+    }
+
+    public func project(_ vectorSize: CGSize) -> CGSize {
+        return vectorSize
+            .scaled(by: 1/scaleFactor)
+            .absolute(in: bounds)
     }
 }
 
