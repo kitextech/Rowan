@@ -10,16 +10,21 @@ import UIKit
 
 class TraceViewController: UIViewController {
     @IBOutlet var traceView: TraceView!
+    @IBOutlet weak var logView: TraceView!
     @IBOutlet weak var xyControl: XYControlView!
 
     private let newton = Newton()
     private var displayLink: CADisplayLink?
 
-    @IBOutlet weak var label0: UILabel!
     @IBOutlet weak var slider0: UISlider!
     @IBOutlet weak var slider1: UISlider!
     @IBOutlet weak var slider2: UISlider!
     @IBOutlet weak var slider3: UISlider!
+
+    @IBOutlet weak var sliderLabel0: UILabel!
+    @IBOutlet weak var sliderLabel1: UILabel!
+    @IBOutlet weak var sliderLabel2: UILabel!
+    @IBOutlet weak var sliderLabel3: UILabel!
 
     private var debugIds = [UUID]()
 
@@ -29,6 +34,8 @@ class TraceViewController: UIViewController {
 
     override func viewDidLoad() {
         super.viewDidLoad()
+
+        // Set up world
 
         func add(drawable: Drawable, m: Scalar, v: Vector = .zero, l: Vector = .zero) {
             traceView.add(drawable)
@@ -116,6 +123,7 @@ class TraceViewController: UIViewController {
 //        addSpring(left: link20, right: wing)
 
         resetSliders()
+        (sliderLabel0.text, sliderLabel1.text, sliderLabel2.text, sliderLabel3.text) = kite.fc.parameterLabels
         startDisplayLink()
     }
 
@@ -219,16 +227,7 @@ class TraceViewController: UIViewController {
     }
 
     private func resetSliders() {
-//        slider3.value = -1 // P
-//        slider2.value = -1 // I
-//        slider1.value = -0.9 // D
-//        slider0.value = 0 // z
-//        didSlide()
-
-        slider3.value = 0 // yaw
-        slider2.value = 0 // roll
-        slider1.value = 0 // pitch
-        slider0.value = 0.175 // thrust
+        (slider0.value, slider1.value, slider2.value, slider3.value) = kite.fc.parameterDefaults
         didSlide()
     }
 }
@@ -279,4 +278,7 @@ class XYControlView: UIControl {
         UIBezierPath(ovalIn: CGRect(center: (0.5*value).absolute(in: bounds), size: CGSize(side: 50))).fill()
     }
 }
+
+
+
 

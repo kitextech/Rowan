@@ -8,6 +8,7 @@
 
 /* Begin PBXBuildFile section */
 		221CE0A11EF2C10B009AA61F /* Matrix.swift in Sources */ = {isa = PBXBuildFile; fileRef = 221CE0A01EF2C10A009AA61F /* Matrix.swift */; };
+		2279262A1F1BCBFB00625ACE /* LogView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 227926291F1BCBFB00625ACE /* LogView.swift */; };
 		2282C9C81F03E46100BCCFB4 /* Aero.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2282C9C71F03E46100BCCFB4 /* Aero.swift */; };
 		229B4F181F1954FE001F330D /* FlightController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 229B4F171F1954FE001F330D /* FlightController.swift */; };
 		22D57CF31EE86457006CC1DB /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 22D57CF21EE86457006CC1DB /* AppDelegate.swift */; };
@@ -25,6 +26,7 @@
 
 /* Begin PBXFileReference section */
 		221CE0A01EF2C10A009AA61F /* Matrix.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = Matrix.swift; path = ../../VisualKite/VisualKite/Matrix.swift; sourceTree = "<group>"; };
+		227926291F1BCBFB00625ACE /* LogView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = LogView.swift; path = Physicum/LogView.swift; sourceTree = "<group>"; };
 		2282C9C71F03E46100BCCFB4 /* Aero.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Aero.swift; sourceTree = "<group>"; };
 		229B4F171F1954FE001F330D /* FlightController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = FlightController.swift; path = Physicum/FlightController.swift; sourceTree = "<group>"; };
 		22D57CEF1EE86457006CC1DB /* Physicum.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Physicum.app; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -56,6 +58,7 @@
 		22D57CE61EE86457006CC1DB = {
 			isa = PBXGroup;
 			children = (
+				227926291F1BCBFB00625ACE /* LogView.swift */,
 				229B4F171F1954FE001F330D /* FlightController.swift */,
 				22D57CF11EE86457006CC1DB /* Physicum */,
 				22D57CF01EE86457006CC1DB /* Products */,
@@ -164,6 +167,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				229B4F181F1954FE001F330D /* FlightController.swift in Sources */,
+				2279262A1F1BCBFB00625ACE /* LogView.swift in Sources */,
 				22D57D0C1EE86508006CC1DB /* TraceView.swift in Sources */,
 				22D57D091EE86508006CC1DB /* Quaternion.swift in Sources */,
 				22D57D0B1EE86508006CC1DB /* Point.swift in Sources */,
