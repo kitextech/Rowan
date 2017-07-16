@@ -22,7 +22,7 @@ class LogView: UIView {
     private let topMargin: CGFloat = 20
     private let margin: CGFloat = 5
     private let inset: CGFloat = 2
-    private let rowHeight: CGFloat = 30
+    private let rowHeight: CGFloat = 25
     private let nameWidth: CGFloat = 40
     private let valueWidth: CGFloat = 45
     private let minMaxWidth: CGFloat = 35
