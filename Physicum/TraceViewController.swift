@@ -10,7 +10,7 @@ import UIKit
 
 class TraceViewController: UIViewController {
     @IBOutlet var traceView: TraceView!
-    @IBOutlet weak var logView: TraceView!
+    @IBOutlet weak var logView: LogView!
     @IBOutlet weak var xyControl: XYControlView!
 
     private let newton = Newton()
@@ -127,6 +127,54 @@ class TraceViewController: UIViewController {
         startDisplayLink()
     }
 
+    // MARK: - Physics and Drawing
+
+    private func startDisplayLink() {
+        //        let before = Date()
+        //        for _ in 0...1000 {
+        //            newton.step(h: 0.01)
+        //        }
+        //
+        //        print("that took \(Date().timeIntervalSince(before)) sec")
+        //        updatePhysics(0.01)
+
+        stopDisplayLink()
+        displayLink = CADisplayLink(target: self, selector: #selector(step))
+        displayLink?.add(to: .main, forMode: .commonModes)
+    }
+
+    @objc func step(link: CADisplayLink) {
+        logView.data = kite.fc.log
+        updatePhysics(link.targetTimestamp - link.timestamp)
+        kite.fc.updateState(x: newton.states[kite.id]!)
+    }
+
+    private func updatePhysics(_ elapsed: TimeInterval) {
+        for _ in 0..<2 {
+            newton.step(h: 10*Scalar(elapsed))
+        }
+
+        for (id, state) in newton.states {
+            traceView.moveDrawable(id: id, pos: state.r, ori: state.q)
+        }
+
+        func color(_ isAggregate: Bool, _ isTorque: Bool) -> UIColor {
+            let base: UIColor = isTorque ? .orange : .blue
+            return isAggregate ? base : base.withAlphaComponent(0.5)
+        }
+
+        traceView.debugDrawables = newton.debugEvaluation(debugIds).map { data in
+            ArrowDrawable(at: data.r, vector: 0.2*data.vec, color: color(data.isAggregate, data.isTorque))
+        }
+
+        traceView.setNeedsDisplay()
+    }
+
+    private func stopDisplayLink() {
+        displayLink?.invalidate()
+        displayLink = nil
+    }
+
     // MARK: - User Actions
 
     @IBAction func didChangeXY(_ sender: XYControlView) {
@@ -178,53 +226,7 @@ class TraceViewController: UIViewController {
         }
     }
 
-    // MARK: - Physics and Drawing
-
-    private func startDisplayLink() {
-//        let before = Date()
-//        for _ in 0...1000 {
-//            newton.step(h: 0.01)
-//        }
-//
-//        print("that took \(Date().timeIntervalSince(before)) sec")
-//        updatePhysics(0.01)
-
-        stopDisplayLink()
-        displayLink = CADisplayLink(target: self, selector: #selector(step))
-        displayLink?.add(to: .main, forMode: .commonModes)
-    }
-
-    @objc func step(link: CADisplayLink) {
-        updatePhysics(link.targetTimestamp - link.timestamp)
-        kite.fc.updateState(x: newton.states[kite.id]!)
-    }
-
-    private func updatePhysics(_ elapsed: TimeInterval) {
-        for _ in 0..<2 {
-            newton.step(h: 10*Scalar(elapsed))
-        }
-
-        for (id, state) in newton.states {
-            traceView.moveDrawable(id: id, pos: state.r, ori: state.q)
-        }
-
-        func color(_ isAggregate: Bool, _ isTorque: Bool) -> UIColor {
-            let base: UIColor = isTorque ? .orange : .blue
-            return isAggregate ? base : base.withAlphaComponent(0.5)
-        }
-
-        traceView.debugDrawables = newton.debugEvaluation(debugIds).map { data in
-            ArrowDrawable(at: data.r, vector: 0.2*data.vec, color: color(data.isAggregate, data.isTorque))
-        }
-
-        traceView.setNeedsDisplay()
-    }
-
-    // invalidate display link if it's non-nil, then set to nil
-    func stopDisplayLink() {
-        displayLink?.invalidate()
-        displayLink = nil
-    }
+    // MARK: - Helpers
 
     private func resetSliders() {
         (slider0.value, slider1.value, slider2.value, slider3.value) = kite.fc.parameterDefaults

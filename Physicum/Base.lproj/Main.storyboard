@@ -216,7 +216,7 @@
                     </view>
                     <size key="freeformSize" width="600" height="600"/>
                     <connections>
-                        <outlet property="logView" destination="lpY-SJ-jHE" id="mYB-YK-WHj"/>
+                        <outlet property="logView" destination="OTj-tE-Jvw" id="dUm-h7-Eb6"/>
                         <outlet property="slider0" destination="XUE-hG-eVs" id="uRb-Kb-svP"/>
                         <outlet property="slider1" destination="lcZ-Ed-UxM" id="7dH-9x-i9F"/>
                         <outlet property="slider2" destination="okt-Ps-ynd" id="3w0-mS-E3K"/>

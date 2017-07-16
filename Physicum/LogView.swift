@@ -17,14 +17,15 @@ class LogView: UIView {
 
     private var labels: [(name: UILabel, min: UILabel, max: UILabel, value: UILabel)] = []
     private var bars: [UIView] = []
-    private let font = UIFont.systemFont(ofSize: 15)
+    private let font = UIFont.systemFont(ofSize: 12)
 
-    private let margin: CGFloat = 10
+    private let topMargin: CGFloat = 20
+    private let margin: CGFloat = 5
     private let inset: CGFloat = 2
-    private let rowHeight: CGFloat = 20
-    private let nameWidth: CGFloat = 50
-    private let valueWidth: CGFloat = 50
-    private let minMaxWidth: CGFloat = 25
+    private let rowHeight: CGFloat = 30
+    private let nameWidth: CGFloat = 40
+    private let valueWidth: CGFloat = 45
+    private let minMaxWidth: CGFloat = 35
     private var barMin: CGFloat { return 3*margin + nameWidth + valueWidth }
     private var barMax: CGFloat { return bounds.width - margin }
     private var barMid: CGFloat { return (barMin + barMax)/2 }
@@ -35,7 +36,7 @@ class LogView: UIView {
             createRows()
         }
 
-        for row in data.indices where data[row] != oldData[row] {
+        for row in data.indices where oldData.count != data.count || data[row] != oldData[row] {
             updateRow(row, data[row])
         }
     }
@@ -59,14 +60,18 @@ class LogView: UIView {
     // Bars
     private func createBar(_ row: Int) -> UIView {
         let bar = UIView()
+        bar.backgroundColor = .darkGray
         bar.frame.size.height = rowHeight - 2*inset
-        bar.frame.origin.y = CGFloat(row)*rowHeight - inset
+        bar.frame.origin.y = topMargin + margin + CGFloat(row)*rowHeight - inset
+        addSubview(bar)
         return bar
     }
 
     private func updateBar(_ row: Int, _ data: LogData) {
         let scale = barWidth/CGFloat(data.max - data.min)
-        bars[row].frame.size.width = scale*CGFloat(data.value)
+        let width = scale*CGFloat(data.value)
+        bars[row].frame.origin.x = min(barMid, barMid + width)
+        bars[row].frame.size.width = abs(width)
     }
 
     // Labels
@@ -86,13 +91,14 @@ class LogView: UIView {
         let param: (x: CGFloat, width: CGFloat, alignment: NSTextAlignment)
         switch type {
         case .name: param = (margin, nameWidth, .right)
-        case .min: param = (barMin, minMaxWidth, .left); label.text = String(format: "%.2f", data.min)
-        case .max: param = (barMax - minMaxWidth, minMaxWidth, .right); label.text = String(format: "%.2f", data.max)
+        case .min: param = (barMin, minMaxWidth, .left); label.text = String(format: "%.1f", data.min)
+        case .max: param = (barMax - minMaxWidth, minMaxWidth, .right); label.text = String(format: "%.1f", data.max)
         case .value: param = (2*margin + nameWidth, valueWidth, .left)
         }
-        label.frame.origin = CGPoint(x: param.x, y: CGFloat(row)*20)
+        label.frame.origin = CGPoint(x: param.x, y: topMargin + margin + CGFloat(row)*rowHeight)
         label.frame.size = CGSize(width: param.width, height: rowHeight)
         label.textAlignment = param.alignment
+        label.textColor = .lightGray
 
         addSubview(label)
         return label

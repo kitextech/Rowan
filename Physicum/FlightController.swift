@@ -45,7 +45,7 @@ class ManualFlightController: FlightController {
     public let parameterDefaults: (Scalar, Scalar, Scalar, Scalar) = (0.58, 0, 0, 0)
 
     // Continuous Outputs
-    public var log: [LogData] = [("Something", 0, 100, 55)]
+    public var log: [LogData] = [("pitch", -1, 1, 0), ("roll", -1, 1, 0), ("yaw", -1, 1, 0)]
     public var thrusts: [Scalar]
 
     // Configuration
@@ -60,7 +60,6 @@ class ManualFlightController: FlightController {
     // State Input
     public func updateState(x: State) {
         let factor: Scalar = 4
-
         let (thrust, pitchDelta, rollDelta, yawDelta) = parameters
 
         thrusts = configs.map { config in
@@ -70,6 +69,10 @@ class ManualFlightController: FlightController {
 
             return thrust*pitchAdjustment*rollAdjustment*yawAdjustment
         }
+
+        log[0].value = pitchDelta
+        log[1].value = rollDelta
+        log[2].value = yawDelta
     }
 
     // MARK: - Helper Methods
