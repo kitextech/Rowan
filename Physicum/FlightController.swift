@@ -15,11 +15,11 @@ protocol FlightController: class {
     // Inputs
     var positionSetPoint: Vector? { set get }
     var attitudeSetPoint: Quaternion? { set get }
-    var parameters: (Scalar, Scalar, Scalar, Scalar) { set get }
+    var parameters: (Scalar, Scalar, Scalar, Scalar, Scalar) { set get }
 
     // Static Outputs
-    var parameterLabels: (String?, String?, String?, String?) { get }
-    var parameterDefaults: (Scalar, Scalar, Scalar, Scalar) { get }
+    var parameterLabels: (String?, String?, String?, String?, String?) { get }
+    var parameterDefaults: (Scalar, Scalar, Scalar, Scalar, Scalar) { get }
 
     // Continuous Outputs
     var log: [LogData] { get }
@@ -38,13 +38,13 @@ protocol FlightController: class {
 
 class ManualFlightController: FlightController {
     // Inputs
-    public var parameters: (Scalar, Scalar, Scalar, Scalar) = (0, 0, 0, 0)
+    public var parameters: (Scalar, Scalar, Scalar, Scalar, Scalar) = (0, 0, 0, 0, 0)
     public var positionSetPoint: Vector? = nil
     public var attitudeSetPoint: Quaternion? = nil
 
     // Static Outputs
-    public let parameterLabels: (String?, String?, String?, String?) = ("thr", "pch", "rll", "yaw")
-    public let parameterDefaults: (Scalar, Scalar, Scalar, Scalar) = (0.64, 0, 0, 0)
+    public let parameterLabels: (String?, String?, String?, String?, String?) = ("thr", "pch", "rll", "yaw", "--")
+    public let parameterDefaults: (Scalar, Scalar, Scalar, Scalar, Scalar) = (0.64, 0, 0, 0, 0)
 
     // Continuous Outputs
     public var log: [LogData] = [("pitch", -1, 1, 0), ("roll", -1, 1, 0), ("yaw", -1, 1, 0)]
@@ -63,7 +63,7 @@ class ManualFlightController: FlightController {
     // State Input
     public func updateState(x: State) {
         let factor: Scalar = 4
-        let (thrust, pitchDelta, rollDelta, yawDelta) = parameters
+        let (thrust, pitchDelta, rollDelta, yawDelta, _) = parameters
 
         thrusts = configs.map { config in
             let pitchAdjustment = (factor + (config.a.x > 0 ? +1 : -1)*pitchDelta)/factor
@@ -83,16 +83,16 @@ class ManualFlightController: FlightController {
 
 class AttitudeFlightController: FlightController {
     // Inputs
-    public var parameters: (Scalar, Scalar, Scalar, Scalar) = (0, 0, 0, 0) // z, P, I, D
+    public var parameters: (Scalar, Scalar, Scalar, Scalar, Scalar) = (0, 0, 0, 0, 0) // z, P, I, D
     public var positionSetPoint: Vector? = .zero
     public var attitudeSetPoint: Quaternion? = nil
 
     // Static Outputs
-    public let parameterLabels: (String?, String?, String?, String?) = ("z", "Kd", "Ki", "Kp")
-    public let parameterDefaults: (Scalar, Scalar, Scalar, Scalar) = (0, 0, 0, 0)
+    public let parameterLabels: (String?, String?, String?, String?, String?) = ("z", "Kd", "Ki", "Kp", "--")
+    public let parameterDefaults: (Scalar, Scalar, Scalar, Scalar, Scalar) = (0, 0, 0, 0, 0)
 
     // Continuous Outputs
-    public var log: [LogData] = [("x", -1, 1, 0), ("y", -1, 1, 0), ("z", -1, 1, 0), ("tx", -1, 1, 0), ("ty", -1, 1, 0), ("tz", -1, 1, 0), ("nrm", 0, 2, 1)]
+    public var log: [LogData] = [("x", -1, 1, 0), ("y", -1, 1, 0), ("z", -1, 1, 0), ("tx", -1, 1, 0), ("ty", -1, 1, 0), ("tz", -1, 1, 0), ("nrm", -1, 1, 0)]
     public var vectorLog: [LogVectorData] = [("t", .red, .zero, .zero), ("t_z", .purple, .zero, .zero), ("t_xy", .orange, .zero, .zero), ("w", .green, .zero, .zero)]
     public var thrusts: [Scalar]
 
@@ -138,7 +138,7 @@ class AttitudeFlightController: FlightController {
             vectorLog[3].value = x.l
 
             let pErr = parameters.3*50
-            let pRate = -parameters.2*2
+            let pRate = -parameters.2*1
 
             let torque = -pErr*errBody - pRate*rateBody
 
@@ -150,15 +150,18 @@ class AttitudeFlightController: FlightController {
             log[4].value = torque.y
             log[5].value = torque.z
 
-            log[6].value = x.q.scalar*x.q.scalar + x.q.vector.squaredNorm
+            log[6].value = (x.q.scalar*x.q.scalar + x.q.vector.squaredNorm - 1)*10
 
             let factor: Scalar = 4
             let overall: Scalar = 0.7
 
+            let torqueZ = torque.projected(on: -e_z)
+            let torqueXY = torque - torqueZ
+
             thrusts = configs.map { config in
                 let pitchAdjustment = (factor - (config.a.x > 0 ? +1 : -1)*torque.y)/factor
                 let rollAdjustment = (factor + (config.a.y > 0 ? +1 : -1)*torque.x)/factor
-                let yawAdjustment = (factor + (config.a.x*config.a.y > 0 ? +1 : -1)*torque.z)/factor
+                let yawAdjustment = (factor + (config.a.x*config.a.y > 0 ? +1 : -1)*torqueZ.norm)/factor
 
                 return overall*pitchAdjustment*rollAdjustment*yawAdjustment
             }
@@ -174,13 +177,13 @@ class AttitudeFlightController: FlightController {
 
 class HeightFlightController: FlightController {
     // Inputs
-    public var parameters: (Scalar, Scalar, Scalar, Scalar) = (0, 0, 0, 0) // z, P, I, D
+    public var parameters: (Scalar, Scalar, Scalar, Scalar, Scalar) = (0, 0, 0, 0, 0) // z, P, I, D
     public var positionSetPoint: Vector? = .zero
     public var attitudeSetPoint: Quaternion? = nil
 
     // Static Outputs
-    public let parameterLabels: (String?, String?, String?, String?) = ("z", "Kd", "Ki", "Kp")
-    public let parameterDefaults: (Scalar, Scalar, Scalar, Scalar) = (0, -0.9, -1, -1)
+    public let parameterLabels: (String?, String?, String?, String?, String?) = ("z", "Kd", "Ki", "Kp", "--")
+    public let parameterDefaults: (Scalar, Scalar, Scalar, Scalar, Scalar) = (0, -0.9, -1, -1, 0)
 
     // Continuous Outputs
     public var log: [LogData] = []

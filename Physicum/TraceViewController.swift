@@ -20,11 +20,13 @@ class TraceViewController: UIViewController {
     @IBOutlet weak var slider1: UISlider!
     @IBOutlet weak var slider2: UISlider!
     @IBOutlet weak var slider3: UISlider!
+    @IBOutlet weak var slider4: UISlider!
 
     @IBOutlet weak var sliderLabel0: UILabel!
     @IBOutlet weak var sliderLabel1: UILabel!
     @IBOutlet weak var sliderLabel2: UILabel!
     @IBOutlet weak var sliderLabel3: UILabel!
+    @IBOutlet weak var sliderLabel4: UILabel!
 
     private var debugIds = [UUID]()
 
@@ -160,7 +162,7 @@ class TraceViewController: UIViewController {
 
     @objc func step(link: CADisplayLink) {
         logView.data = kite.fc.log
-        updatePhysics(link.targetTimestamp - link.timestamp)
+        updatePhysics(0.1*(link.targetTimestamp - link.timestamp))
         kite.fc.updateState(x: newton.states[kite.id]!)
 
         box.position = newton.states[kite.id]!.r
@@ -181,7 +183,7 @@ class TraceViewController: UIViewController {
 
     private func debugDraw() {
         let forceDrawables: [ArrowDrawable] = newton.debugEvaluation(debugIds).map { data in
-            let color = (data.isTorque ? UIColor.brown : UIColor.blue).withAlphaComponent(data.isAggregate ? 1 : 0.5)
+            let color = (data.isTorque ? UIColor.purple : UIColor.blue).withAlphaComponent(data.isAggregate ? 1 : 0.5)
             return ArrowDrawable(at: data.r, vector: 0.2*data.vec, color: color)
         }
 
@@ -209,10 +211,7 @@ class TraceViewController: UIViewController {
 
     @IBAction func didSlide() {
         kite.fc.parameters = (slider0.value, slider1.value, slider2.value, slider3.value)
-
-//        newton.states[kite.id]?.q = Quaternion(axis: e_y, angle: slider0.value)*Quaternion(axis: e_x, angle: slider1.value)
-
-        let rot = Quaternion(axis: e_y, angle: slider0.value)*Quaternion(axis: e_x, angle: slider1.value) //*Quaternion(axis: e_z, angle: slider2.value)
+        let rot = Quaternion(axis: e_x, angle: slider0.value)*Quaternion(axis: e_y, angle: slider1.value)*Quaternion(axis: e_z, angle: slider2.value)
 
         kite.fc.attitudeSetPoint = rot
         box.orientation = rot
