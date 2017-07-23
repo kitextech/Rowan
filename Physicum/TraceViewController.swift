@@ -16,17 +16,8 @@ class TraceViewController: UIViewController {
     private let newton = Newton()
     private var displayLink: CADisplayLink?
 
-    @IBOutlet weak var slider0: UISlider!
-    @IBOutlet weak var slider1: UISlider!
-    @IBOutlet weak var slider2: UISlider!
-    @IBOutlet weak var slider3: UISlider!
-    @IBOutlet weak var slider4: UISlider!
-
-    @IBOutlet weak var sliderLabel0: UILabel!
-    @IBOutlet weak var sliderLabel1: UILabel!
-    @IBOutlet weak var sliderLabel2: UILabel!
-    @IBOutlet weak var sliderLabel3: UILabel!
-    @IBOutlet weak var sliderLabel4: UILabel!
+    private var sliders: [UISlider] = []
+    private var labels: [UILabel] = []
 
     private var debugIds = [UUID]()
 
@@ -140,7 +131,7 @@ class TraceViewController: UIViewController {
 //        addSpring(left: link20, right: wing)
 
         resetSliders()
-        (sliderLabel0.text, sliderLabel1.text, sliderLabel2.text, sliderLabel3.text, sliderLabel4.text) = kite.fc.parameterLabels
+//        (sliderLabel0.text, sliderLabel1.text, sliderLabel2.text, sliderLabel3.text, sliderLabel4.text) = kite.fc.parameterLabels
         startDisplayLink()
     }
 
@@ -155,17 +146,26 @@ class TraceViewController: UIViewController {
         //        print("that took \(Date().timeIntervalSince(before)) sec")
         //        updatePhysics(0.01)
 
+        setupSliders()
         stopDisplayLink()
         displayLink = CADisplayLink(target: self, selector: #selector(step))
         displayLink?.add(to: .main, forMode: .commonModes)
     }
 
+    private func setupSliders() {
+        for param in kite.fc.parameters {
+            let slider = UISlider()
+            slider.addTarget(self, action: #selector(didSlide), for: <#T##UIControlEvents#>)
+        }
+    }
+
     @objc func step(link: CADisplayLink) {
         logView.data = kite.fc.log
         updatePhysics(0.1*(link.targetTimestamp - link.timestamp))
-        kite.fc.updateState(x: newton.states[kite.id]!)
+        kite.fc.state = newton.states[kite.id]!
 
-        box.position = newton.states[kite.id]!.r
+        box.position = kite.fc.state.r
+        box.orientation = kite.fc.attitudeSetPoint ?? .id
         debugDraw()
 
         traceView.setNeedsDisplay()
