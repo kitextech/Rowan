@@ -9,13 +9,14 @@
 import UIKit
 
 public class Tracer {
-    public var projectionAxis = e_y
-    public var scaleFactor: Scalar = 70
+    public var projectionPlane = Plane(center: .origin, normal: e_y)
+    public var scaleFactor: Scalar = 30
     public var bounds: CGRect = .unit
 
     public func pointify(_ vector: Vector) -> CGPoint {
         return vector
-            .collapsed(along: projectionAxis)
+            .translated(by: -projectionPlane.center)
+            .collapsed(on: projectionPlane.bases)
             .scaled(by: 1/scaleFactor)
             .absolute(in: bounds)
     }
@@ -24,7 +25,8 @@ public class Tracer {
         return point
             .relative(in: bounds)
             .scaled(by: scaleFactor)
-            .deCollapsed(along: projectionAxis)
+            .deCollapsed(on: projectionPlane.bases)
+            .translated(by: projectionPlane.center)
     }
 
     public func project(_ vectorSize: CGSize) -> CGSize {
@@ -148,16 +150,16 @@ public struct SphereDrawable: Drawable {
 
     public var lines: [Line] {
         let longitudes = 20
-        let latitudes = 10
+        let latitudes = 20
 
         let longDelta = 2*π/Scalar(longitudes)
-        let latDelta = (π/2)/Scalar(latitudes)
+        let latDelta = π/Scalar(latitudes)
 
         var lines = [Line]()
         for i in 0...longitudes {
             let phi = -π/2 + Scalar(i)*longDelta
 
-            for j in 0..<latitudes {
+            for j in -latitudes/2..<latitudes/2 {
                 let theta = π/2 + Scalar(j)*latDelta
                 let start = Vector(phi: phi, theta: theta, r: radius)
                 let end = Vector(phi: phi, theta: theta + latDelta, r: radius)
@@ -165,7 +167,7 @@ public struct SphereDrawable: Drawable {
             }
         }
 
-        for j in 0..<latitudes {
+        for j in -latitudes/2..<latitudes/2 {
             let theta = π/2 + Scalar(j)*latDelta
             for i in 0...longitudes {
                 let phi = -π/2 + Scalar(i)*longDelta

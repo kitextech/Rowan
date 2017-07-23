@@ -9,7 +9,7 @@
 import UIKit
 
 class TraceViewController: UIViewController {
-    @IBOutlet var traceView: TraceView!
+    @IBOutlet weak var traceView: TraceView!
     @IBOutlet weak var logView: LogView!
     @IBOutlet weak var xyControl: XYControlView!
 
@@ -29,23 +29,34 @@ class TraceViewController: UIViewController {
     private var debugIds = [UUID]()
 
     private var kite: Kite!
+    private var wind: Vector = .zero
+    private var gravity: Vector = 9.8*e_z
 
-    var dome = BoxDrawable(dx: 4, dy: 4, dz: 20)
+    private var box = BoxDrawable(dx: 4, dy: 4, dz: 20)
+
+    // typealias UnaryForce = (a: Vector, i: UUID, f: (State) -> Vector)
+
+    private func dragForce() -> UnaryForce {
+        fatalError()
+    }
+
+    private func gravityForce() -> UnaryForce {
+        fatalError()
+    }
+
+    private func add(drawable: Drawable, m: Scalar, v: Vector = .zero, l: Vector = .zero) {
+        traceView.add(drawable)
+        let body = Body(id: drawable.id, m: m)
+        let state = State(r: drawable.position, p: m*v, q: drawable.orientation, l: l)
+        newton.add(body: body, state: state)
+    }
 
     override func viewDidLoad() {
         super.viewDidLoad()
 
         // Set up world
 
-        func add(drawable: Drawable, m: Scalar, v: Vector = .zero, l: Vector = .zero) {
-            traceView.add(drawable)
-            let body = Body(id: drawable.id, m: m)
-            let state = State(r: drawable.position, p: m*v, q: drawable.orientation, l: l)
-            newton.add(body: body, state: state)
-        }
-
-        traceView.add(BoxDrawable(dx: 40, dy: 40, dz: 40))
-        traceView.add(dome)
+        traceView.add(box)
 
 //        let link1 = BoxDrawable(at: 0*e_x - 30*e_z, dx: 5, dy: 1, dz: 1)
 //        let link2 = BoxDrawable(at: 5*e_x - 30*e_z, dx: 5, dy: 1, dz: 1)
@@ -69,21 +80,25 @@ class TraceViewController: UIViewController {
 //        let link20 = BoxDrawable(at: 95*e_x - 30*e_z, dx: 5, dy: 1, dz: 1)
 
 //        let wing = KiteDrawable(at: 97.5*e_x - 30*e_z)
-        let wing = KiteDrawable(at: .origin)
 
 //        let links: [Drawable] = [link1, link2, link3, link4, link5, link6, link7, link8, link9, link10, link11, link12, link13, link14, link15, link16, link17, link18, link19, link20, wing]
 //
 //        add(drawable: link1, m: 100000)
 //        links.dropFirst().forEach { add(drawable: $0, m: 2) }
+
+        let wing = KiteDrawable(at: .origin)
+
         add(drawable: wing, m: 50)
 
         let configs = wing.motorPoints.map { ($0, 20, 2*($0.x*$0.y > 0 ? +1 : -1)) as MotorConfig }
-        let fc = ManualFlightController(configs: configs)
+//        let fc = ManualFlightController(configs: configs)
+        let fc = AttitudeFlightController(configs: configs)
         kite = Kite(id: wing.id, fc: fc)
         kite.motorForces.forEach(newton.add)
         kite.motorTorques.forEach(newton.add)
 
         debugIds.append(wing.id)
+        traceView.trackedId = wing.id
 
         let gravity: (State) -> Vector = { _ in 1*e_z }
         let gravityWing: (State) -> Vector = { _ in 50*e_z }
@@ -93,7 +108,7 @@ class TraceViewController: UIViewController {
         }
 
 //        addUnary(to: links.dropFirst().dropLast(), u: gravity)
-        newton.add(force: (0.2*e_z, wing.id, gravityWing))
+//        newton.add(force: (0.2*e_z, wing.id, gravityWing))
 
         func addSpring(left: Drawable, right: Drawable, offset: (Scalar, Scalar) = (-0.5, 0.5)) {
             let dr = left.position - right.position
@@ -147,6 +162,9 @@ class TraceViewController: UIViewController {
         logView.data = kite.fc.log
         updatePhysics(link.targetTimestamp - link.timestamp)
         kite.fc.updateState(x: newton.states[kite.id]!)
+        debugDraw()
+
+        traceView.setNeedsDisplay()
     }
 
     private func updatePhysics(_ elapsed: TimeInterval) {
@@ -157,7 +175,9 @@ class TraceViewController: UIViewController {
         for (id, state) in newton.states {
             traceView.moveDrawable(id: id, pos: state.r, ori: state.q)
         }
+    }
 
+    private func debugDraw() {
         func color(_ isAggregate: Bool, _ isTorque: Bool) -> UIColor {
             let base: UIColor = isTorque ? .orange : .blue
             return isAggregate ? base : base.withAlphaComponent(0.5)
@@ -166,8 +186,6 @@ class TraceViewController: UIViewController {
         traceView.debugDrawables = newton.debugEvaluation(debugIds).map { data in
             ArrowDrawable(at: data.r, vector: 0.2*data.vec, color: color(data.isAggregate, data.isTorque))
         }
-
-        traceView.setNeedsDisplay()
     }
 
     private func stopDisplayLink() {
@@ -178,18 +196,22 @@ class TraceViewController: UIViewController {
     // MARK: - User Actions
 
     @IBAction func didChangeXY(_ sender: XYControlView) {
-        slider1.value = Scalar(sender.value.x)
-        slider2.value = Scalar(sender.value.y)
-        didSlide()
-
-        let axis = Vector(-sender.value.y, sender.value.x, 0)
-        let norm = axis.norm
-
-        dome.orientation = norm > 0 ? Quaternion(rotationAround: axis/norm, by: norm) : .id
+//        let axis = Vector(-sender.value.y, sender.value.x, 0)
+//        let norm = axis.norm
+//        let orientation = norm > 0 ? Quaternion(axis: axis/norm, angle: norm) : .id
+//        box.orientation = orientation
+//        kite.fc.attitudeSetPoint = orientation
     }
 
     @IBAction func didSlide() {
         kite.fc.parameters = (slider0.value, slider1.value, slider2.value, slider3.value)
+
+        newton.states[kite.id]?.q = Quaternion(axis: e_y, angle: slider0.value)*Quaternion(axis: e_x, angle: slider1.value)
+
+        let rot = Quaternion(axis: e_y, angle: slider0.value)*Quaternion(axis: e_z, angle: slider2.value)
+
+        kite.fc.attitudeSetPoint = rot
+        box.orientation = rot
     }
 
     @IBAction func didPinch(_ sender: UIPinchGestureRecognizer) {
@@ -213,13 +235,10 @@ class TraceViewController: UIViewController {
         case 1:
             resetSliders()
         case 2:
-            slider0.value = 0.7
             didSlide()
         case 3:
-            slider0.value = 0.5
             didSlide()
         case 4:
-            slider0.value = 0.3
             didSlide()
         default:
             fatalError()
@@ -280,7 +299,5 @@ class XYControlView: UIControl {
         UIBezierPath(ovalIn: CGRect(center: (0.5*value).absolute(in: bounds), size: CGSize(side: 50))).fill()
     }
 }
-
-
 
 
