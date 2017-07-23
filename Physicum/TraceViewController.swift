@@ -16,7 +16,9 @@ class TraceViewController: UIViewController {
     private let newton = Newton()
     private var displayLink: CADisplayLink?
 
+    @IBOutlet weak var sliderStack: UIStackView!
     private var sliders: [UISlider] = []
+    @IBOutlet weak var labelStack: UIStackView!
     private var labels: [UILabel] = []
 
     private var debugIds = [UUID]()
@@ -84,7 +86,6 @@ class TraceViewController: UIViewController {
         add(drawable: wing, m: 50)
 
         let configs = wing.motorPoints.map { ($0, 20, 2*($0.x*$0.y > 0 ? +1 : -1)) as MotorConfig }
-//        let fc = ManualFlightController(configs: configs)
         let fc = AttitudeFlightController(configs: configs)
         kite = Kite(id: wing.id, fc: fc)
         kite.motorForces.forEach(newton.add)
@@ -130,8 +131,7 @@ class TraceViewController: UIViewController {
 //        addSpring(left: link19, right: link20)
 //        addSpring(left: link20, right: wing)
 
-        resetSliders()
-//        (sliderLabel0.text, sliderLabel1.text, sliderLabel2.text, sliderLabel3.text, sliderLabel4.text) = kite.fc.parameterLabels
+        setupSliders()
         startDisplayLink()
     }
 
@@ -146,17 +146,44 @@ class TraceViewController: UIViewController {
         //        print("that took \(Date().timeIntervalSince(before)) sec")
         //        updatePhysics(0.01)
 
-        setupSliders()
         stopDisplayLink()
         displayLink = CADisplayLink(target: self, selector: #selector(step))
         displayLink?.add(to: .main, forMode: .commonModes)
     }
 
     private func setupSliders() {
-        for param in kite.fc.parameters {
+        sliderStack.removeAll()
+        labelStack.removeAll()
+
+        sliders = kite.fc.parameters.map { parameter in
             let slider = UISlider()
-            slider.addTarget(self, action: #selector(didSlide), for: <#T##UIControlEvents#>)
+            slider.minimumValue = parameter.min
+            slider.maximumValue = parameter.max
+            slider.value = parameter.default
+            slider.addTarget(self, action: #selector(didSlide), for: .valueChanged)
+            sliderStack.addArrangedSubview(slider)
+
+            return slider
         }
+
+        labels = kite.fc.parameters.map { parameter in
+            let label = UILabel()
+            label.textColor = .white
+            label.font = UIFont.systemFont(ofSize: 12)
+            label.text = parameter.name
+            labelStack.addArrangedSubview(label)
+
+            return label
+        }
+
+        didSlide()
+    }
+
+    private func resetSliders() {
+        zip(sliders, kite.fc.parameters).forEach { splatMe in let (slider, parameter) = splatMe
+            slider.value = parameter.default
+        }
+        didSlide()
     }
 
     @objc func step(link: CADisplayLink) {
@@ -209,12 +236,13 @@ class TraceViewController: UIViewController {
 //        kite.fc.attitudeSetPoint = orientation
     }
 
-    @IBAction func didSlide() {
-        kite.fc.parameters = (slider0.value, slider1.value, slider2.value, slider3.value, slider4.value)
-        let rot = Quaternion(axis: e_x, angle: slider0.value)*Quaternion(axis: e_y, angle: slider1.value)*Quaternion(axis: e_z, angle: slider2.value)
+    @objc func didSlide() {
+        kite.fc.parameterValues = sliders.map { $0.value }
 
-        kite.fc.attitudeSetPoint = rot
-        box.orientation = rot
+        let rotX = Quaternion(axis: e_x, angle: sliders[0].value)
+        let rotY = Quaternion(axis: e_y, angle: sliders[1].value)
+        let rotZ = Quaternion(axis: e_z, angle: sliders[2].value)
+        kite.fc.attitudeSetPoint = rotX*rotY*rotZ
     }
 
     @IBAction func didPinch(_ sender: UIPinchGestureRecognizer) {
@@ -231,10 +259,7 @@ class TraceViewController: UIViewController {
     @IBAction func didTapButton(_ sender: UIButton) {
         switch sender.tag {
         case 0:
-            newton.states[kite.id]?.r = .origin
-            newton.states[kite.id]?.p = .zero
-            newton.states[kite.id]?.l = .zero
-            newton.states[kite.id]?.q = .id
+            newton.states[kite.id] = .id
         case 1:
             resetSliders()
         case 2:
@@ -250,10 +275,6 @@ class TraceViewController: UIViewController {
 
     // MARK: - Helpers
 
-    private func resetSliders() {
-        (slider0.value, slider1.value, slider2.value, slider3.value, slider4.value) = kite.fc.parameterDefaults
-        didSlide()
-    }
 }
 
 typealias MotorConfig = (a: Vector, maxThrust: Scalar, maxTorque: Scalar)
@@ -303,4 +324,11 @@ class XYControlView: UIControl {
     }
 }
 
-
+extension UIStackView {
+    public func removeAll() {
+        let views = arrangedSubviews
+        for view in views {
+            removeArrangedSubview(view)
+        }
+    }
+}

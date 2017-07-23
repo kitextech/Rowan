@@ -22,39 +22,15 @@
                         <subviews>
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="lpY-SJ-jHE" userLabel="Trace" customClass="TraceView" customModule="Physicum" customModuleProvider="target">
                                 <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
-                                <subviews>
-                                    <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" distribution="equalSpacing" spacing="15" translatesAutoresizingMaskIntoConstraints="NO" id="Vw7-e1-A5C">
-                                        <rect key="frame" x="385" y="510" width="200" height="75"/>
-                                        <subviews>
-                                            <slider opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" value="0.5" minValue="0.0" maxValue="1" translatesAutoresizingMaskIntoConstraints="NO" id="LOC-CC-GBg">
-                                                <rect key="frame" x="-2" y="0.0" width="204" height="31"/>
-                                            </slider>
-                                            <slider opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" value="0.5" minValue="0.0" maxValue="1" translatesAutoresizingMaskIntoConstraints="NO" id="MQF-sg-kj1">
-                                                <rect key="frame" x="-2" y="45" width="204" height="31"/>
-                                            </slider>
-                                        </subviews>
-                                    </stackView>
-                                </subviews>
                                 <color key="backgroundColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="custom" customColorSpace="displayP3"/>
                                 <gestureRecognizers/>
-                                <constraints>
-                                    <constraint firstAttribute="bottom" secondItem="Vw7-e1-A5C" secondAttribute="bottom" constant="15" id="FLV-4E-uPb"/>
-                                    <constraint firstAttribute="trailing" secondItem="Vw7-e1-A5C" secondAttribute="trailing" constant="15" id="dgX-Rb-8Xo"/>
-                                </constraints>
                                 <connections>
                                     <outletCollection property="gestureRecognizers" destination="IQX-cu-aPg" appends="YES" id="LrU-eX-ORj"/>
                                     <outletCollection property="gestureRecognizers" destination="Hj6-hl-ni8" appends="YES" id="ESO-YA-l5y"/>
                                 </connections>
                             </view>
-                            <view userInteractionEnabled="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="OTj-tE-Jvw" userLabel="LogView" customClass="LogView" customModule="Physicum" customModuleProvider="target">
-                                <rect key="frame" x="0.0" y="0.0" width="270" height="360"/>
-                                <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
-                                <constraints>
-                                    <constraint firstAttribute="width" constant="270" id="cxa-Or-crk"/>
-                                </constraints>
-                            </view>
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="zl4-BM-UaO">
-                                <rect key="frame" x="240" y="360" width="130" height="240"/>
+                                <rect key="frame" x="470" y="360" width="130" height="240"/>
                                 <subviews>
                                     <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="mW1-Vj-xNS">
                                         <rect key="frame" x="22.5" y="5" width="85" height="35"/>
@@ -106,22 +82,64 @@
                                             <action selector="didTapButton:" destination="BYZ-38-t0r" eventType="touchUpInside" id="kzX-uO-J0h"/>
                                         </connections>
                                     </button>
+                                    <button opaque="NO" tag="4" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="4Lg-AH-btw">
+                                        <rect key="frame" x="45" y="188" width="40" height="35"/>
+                                        <fontDescription key="fontDescription" type="system" pointSize="19"/>
+                                        <state key="normal" title="Hide">
+                                            <color key="titleColor" white="0.66666666666666663" alpha="1" colorSpace="calibratedWhite"/>
+                                        </state>
+                                        <connections>
+                                            <action selector="didTapButton:" destination="BYZ-38-t0r" eventType="touchUpInside" id="W7S-Ey-acm"/>
+                                        </connections>
+                                    </button>
                                 </subviews>
                                 <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                                 <constraints>
                                     <constraint firstItem="mW1-Vj-xNS" firstAttribute="top" secondItem="zl4-BM-UaO" secondAttribute="top" constant="5" id="25X-8J-gHM"/>
                                     <constraint firstItem="8Sm-EM-LKi" firstAttribute="top" secondItem="udt-YT-meT" secondAttribute="bottom" id="7Eh-nH-O1g"/>
+                                    <constraint firstItem="4Lg-AH-btw" firstAttribute="top" secondItem="cvx-qn-EY0" secondAttribute="bottom" constant="8" id="Awt-kw-Qfb"/>
                                     <constraint firstItem="5rm-ae-Ybh" firstAttribute="centerX" secondItem="8Sm-EM-LKi" secondAttribute="centerX" id="Jz1-y7-fsc"/>
                                     <constraint firstAttribute="width" constant="130" id="Kfw-ws-2Jx"/>
                                     <constraint firstItem="cvx-qn-EY0" firstAttribute="top" secondItem="5rm-ae-Ybh" secondAttribute="bottom" id="O3K-Kc-WtZ"/>
                                     <constraint firstItem="udt-YT-meT" firstAttribute="top" secondItem="mW1-Vj-xNS" secondAttribute="bottom" id="SM1-cV-Otp"/>
+                                    <constraint firstAttribute="height" constant="240" id="UTx-UT-Enr"/>
                                     <constraint firstItem="udt-YT-meT" firstAttribute="centerX" secondItem="mW1-Vj-xNS" secondAttribute="centerX" id="Xja-uj-Ock"/>
+                                    <constraint firstItem="4Lg-AH-btw" firstAttribute="centerX" secondItem="cvx-qn-EY0" secondAttribute="centerX" id="aIG-xK-QAs"/>
                                     <constraint firstItem="mW1-Vj-xNS" firstAttribute="centerX" secondItem="zl4-BM-UaO" secondAttribute="centerX" id="gdK-4v-K04"/>
                                     <constraint firstItem="5rm-ae-Ybh" firstAttribute="top" secondItem="8Sm-EM-LKi" secondAttribute="bottom" id="j1p-hU-gRC"/>
                                     <constraint firstItem="8Sm-EM-LKi" firstAttribute="centerX" secondItem="udt-YT-meT" secondAttribute="centerX" id="nHG-hu-XJG"/>
                                     <constraint firstItem="cvx-qn-EY0" firstAttribute="centerX" secondItem="5rm-ae-Ybh" secondAttribute="centerX" id="otg-iM-qSX"/>
                                 </constraints>
                             </view>
+                            <view userInteractionEnabled="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="OTj-tE-Jvw" userLabel="LogView" customClass="LogView" customModule="Physicum" customModuleProvider="target">
+                                <rect key="frame" x="0.0" y="0.0" width="270" height="360"/>
+                                <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
+                                <constraints>
+                                    <constraint firstAttribute="width" constant="270" id="cxa-Or-crk"/>
+                                </constraints>
+                            </view>
+                            <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" distribution="equalSpacing" spacing="15" translatesAutoresizingMaskIntoConstraints="NO" id="Vw7-e1-A5C">
+                                <rect key="frame" x="255" y="555" width="160" height="30"/>
+                                <subviews>
+                                    <slider opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" value="0.5" minValue="0.0" maxValue="1" translatesAutoresizingMaskIntoConstraints="NO" id="MQF-sg-kj1">
+                                        <rect key="frame" x="-2" y="0.0" width="164" height="31"/>
+                                    </slider>
+                                </subviews>
+                            </stackView>
+                            <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" distribution="fillEqually" spacing="15" translatesAutoresizingMaskIntoConstraints="NO" id="MY2-E8-12L">
+                                <rect key="frame" x="420" y="555" width="40" height="30"/>
+                                <subviews>
+                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="gBg-Ip-9ab">
+                                        <rect key="frame" x="0.0" y="0.0" width="40" height="30"/>
+                                        <fontDescription key="fontDescription" type="system" pointSize="12"/>
+                                        <color key="textColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="displayP3"/>
+                                        <nil key="highlightedColor"/>
+                                    </label>
+                                </subviews>
+                                <constraints>
+                                    <constraint firstAttribute="width" constant="40" id="zCh-pn-XTN"/>
+                                </constraints>
+                            </stackView>
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="WYl-UC-w26" customClass="XYControlView" customModule="Physicum" customModuleProvider="target">
                                 <rect key="frame" x="0.0" y="360" width="240" height="240"/>
                                 <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
@@ -138,23 +156,29 @@
                         <gestureRecognizers/>
                         <constraints>
                             <constraint firstAttribute="trailing" secondItem="lpY-SJ-jHE" secondAttribute="trailing" id="0pt-Rp-pDi"/>
+                            <constraint firstItem="MY2-E8-12L" firstAttribute="height" secondItem="Vw7-e1-A5C" secondAttribute="height" id="14I-nm-fmy"/>
                             <constraint firstItem="OTj-tE-Jvw" firstAttribute="top" secondItem="y3c-jy-aDJ" secondAttribute="bottom" constant="-20" id="4E1-xZ-v1M"/>
-                            <constraint firstItem="wfy-db-euE" firstAttribute="top" secondItem="zl4-BM-UaO" secondAttribute="bottom" id="5PP-av-q4D"/>
                             <constraint firstItem="wfy-db-euE" firstAttribute="top" secondItem="WYl-UC-w26" secondAttribute="bottom" id="7sj-Ca-5NJ"/>
                             <constraint firstItem="lpY-SJ-jHE" firstAttribute="top" secondItem="y3c-jy-aDJ" secondAttribute="bottom" constant="-20" id="IIj-8n-kUP"/>
-                            <constraint firstItem="Vw7-e1-A5C" firstAttribute="leading" secondItem="zl4-BM-UaO" secondAttribute="trailing" constant="15" id="LR9-16-q1I"/>
+                            <constraint firstItem="wfy-db-euE" firstAttribute="top" secondItem="MY2-E8-12L" secondAttribute="bottom" constant="15" id="KgS-Hj-n7L"/>
                             <constraint firstItem="WYl-UC-w26" firstAttribute="leading" secondItem="8bC-Xf-vdC" secondAttribute="leading" id="MWC-28-bGP"/>
                             <constraint firstItem="lpY-SJ-jHE" firstAttribute="leading" secondItem="8bC-Xf-vdC" secondAttribute="leading" id="PCV-wH-VNs"/>
+                            <constraint firstItem="Vw7-e1-A5C" firstAttribute="leading" secondItem="WYl-UC-w26" secondAttribute="trailing" constant="15" id="WPx-lR-QrA"/>
+                            <constraint firstItem="wfy-db-euE" firstAttribute="top" secondItem="zl4-BM-UaO" secondAttribute="bottom" id="Xml-LI-T0q"/>
                             <constraint firstItem="OTj-tE-Jvw" firstAttribute="leading" secondItem="8bC-Xf-vdC" secondAttribute="leading" id="btY-vL-soc"/>
                             <constraint firstItem="wfy-db-euE" firstAttribute="top" secondItem="lpY-SJ-jHE" secondAttribute="bottom" id="gH8-Zl-Oxp"/>
+                            <constraint firstItem="MY2-E8-12L" firstAttribute="leading" secondItem="Vw7-e1-A5C" secondAttribute="trailing" constant="5" id="ibz-WD-KgW"/>
+                            <constraint firstAttribute="trailing" secondItem="zl4-BM-UaO" secondAttribute="trailing" id="jQ6-if-dZu"/>
+                            <constraint firstItem="zl4-BM-UaO" firstAttribute="leading" secondItem="MY2-E8-12L" secondAttribute="trailing" constant="10" id="l2t-gR-F3j"/>
                             <constraint firstItem="WYl-UC-w26" firstAttribute="top" secondItem="OTj-tE-Jvw" secondAttribute="bottom" id="n49-e0-Tpe"/>
-                            <constraint firstItem="zl4-BM-UaO" firstAttribute="leading" secondItem="WYl-UC-w26" secondAttribute="trailing" id="sFQ-m4-qKg"/>
-                            <constraint firstItem="zl4-BM-UaO" firstAttribute="top" secondItem="WYl-UC-w26" secondAttribute="top" id="vx1-cM-SkH"/>
+                            <constraint firstItem="wfy-db-euE" firstAttribute="top" secondItem="Vw7-e1-A5C" secondAttribute="bottom" constant="15" id="uF2-Tz-K8O"/>
                         </constraints>
                     </view>
                     <size key="freeformSize" width="600" height="600"/>
                     <connections>
+                        <outlet property="labelStack" destination="MY2-E8-12L" id="mFE-Ga-cLE"/>
                         <outlet property="logView" destination="OTj-tE-Jvw" id="dUm-h7-Eb6"/>
+                        <outlet property="sliderStack" destination="Vw7-e1-A5C" id="pHy-pk-T6T"/>
                         <outlet property="traceView" destination="lpY-SJ-jHE" id="9en-P5-cAF"/>
                         <outlet property="xyControl" destination="WYl-UC-w26" id="sou-0f-xe0"/>
                     </connections>

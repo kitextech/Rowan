@@ -12,30 +12,20 @@ typealias LogData = (name: String, min: Scalar, max: Scalar, value: Scalar)
 typealias LogVectorData = (name: String, color: UIColor, pos: Vector, value: Vector)
 typealias Parameter = (name: String, min: Scalar, max: Scalar, default: Scalar)
 
-//struct Parameter {
-//    let name: String
-//    let defaultValue: Scalar
-//    var value: Scalar
-//
-//    init(_ name: String, _ defaultValue: Scalar) {
-//        self.name = name
-//        self.defaultValue = defaultValue
-//        self.value = defaultValue
-//    }
-//}
-
 protocol FlightController: class {
     // Inputs
     var state: State { set get }
     var positionSetPoint: Vector? { set get }
     var attitudeSetPoint: Quaternion? { set get }
 
+    // Parameters
+    var parameters: [Parameter] { get }
+    var parameterValues: [Scalar] { set get }
+
     // Outputs
     var thrusts: [Scalar] { get }
 
     // Debugging and logging
-    var parameterValues: [Scalar] { set get }
-    var parameters: [Parameter] { get }
     var log: [LogData] { get }
     var vectorLog: [LogVectorData] { get }
 
@@ -46,20 +36,40 @@ protocol FlightController: class {
     init(configs: [MotorConfig])
 }
 
+//class BaseFlightController: FlightController {
+//
+//}
+
 class AttitudeFlightController: FlightController {
     // Inputs
-    public var state: State { didSet { stateChanged() } }
+    public var state: State = .id { didSet { stateChanged() } }
     public var positionSetPoint: Vector? = .zero
     public var attitudeSetPoint: Quaternion? = nil
+
+    // Parameters
+    public let parameters: [Parameter] = [("rx", -1, 1, 0),
+                                          ("ry", -1, 1, 0),
+                                          ("rz", -1, 1, 0),
+                                          ("Perr", -100, 100, 0),
+                                          ("Prate", -2, 2, 0)]
+    public var parameterValues: [Scalar]
 
     // Output
     public var thrusts: [Scalar]
 
     // Debugging and logging
-    public var parameterValues: [Scalar] = []
-    public let parameters: [Parameter] = []
-    public var log: [LogData] = [("x", -1, 1, 0), ("y", -1, 1, 0), ("z", -1, 1, 0), ("tx", -1, 1, 0), ("ty", -1, 1, 0), ("tz", -1, 1, 0), ("nrm", -1, 1, 0)]
-    public var vectorLog: [LogVectorData] = [("t", .red, .zero, .zero), ("t_z", .purple, .zero, .zero), ("t_xy", .orange, .zero, .zero), ("w", .green, .zero, .zero)]
+    public var log: [LogData] = [("x", -1, 1, 0),
+                                 ("y", -1, 1, 0),
+                                 ("z", -1, 1, 0),
+                                 ("tx", -1, 1, 0),
+                                 ("ty", -1, 1, 0),
+                                 ("tz", -1, 1, 0),
+                                 ("nrm", -1, 1, 0)]
+
+    public var vectorLog: [LogVectorData] = [("t", .red, .zero, .zero),
+                                             ("t_z", .purple, .zero, .zero),
+                                             ("t_xy", .orange, .zero, .zero),
+                                             ("w", .green, .zero, .zero)]
 
     // Configuration
     public let configs: [MotorConfig]
@@ -68,9 +78,11 @@ class AttitudeFlightController: FlightController {
     required init(configs: [MotorConfig]) {
         self.configs = configs
         self.thrusts = Array(repeating: 0, count: configs.count)
+        self.parameterValues = parameters.map { $0.default }
     }
 
-    // State Input
+    // MARK: - Private
+
     private func stateChanged() {
         if let attitudeSetPoint = attitudeSetPoint {
             let err = attitudeSetPoint*state.q.conjugate
@@ -102,8 +114,8 @@ class AttitudeFlightController: FlightController {
             vectorLog[3].pos = state.r
             vectorLog[3].value = state.l
 
-            let pErr = parameters.3*50
-            let pRate = -parameters.2*1
+            let pErr = parameterValues[3]
+            let pRate = -parameterValues[4]
 
             let torque = -pErr*errBody - pRate*rateBody
 
