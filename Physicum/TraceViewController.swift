@@ -140,7 +140,7 @@ class TraceViewController: UIViewController {
 //        addSpring(left: link20, right: wing)
 
         resetSliders()
-        (sliderLabel0.text, sliderLabel1.text, sliderLabel2.text, sliderLabel3.text) = kite.fc.parameterLabels
+        (sliderLabel0.text, sliderLabel1.text, sliderLabel2.text, sliderLabel3.text, sliderLabel4.text) = kite.fc.parameterLabels
         startDisplayLink()
     }
 
@@ -210,7 +210,7 @@ class TraceViewController: UIViewController {
     }
 
     @IBAction func didSlide() {
-        kite.fc.parameters = (slider0.value, slider1.value, slider2.value, slider3.value)
+        kite.fc.parameters = (slider0.value, slider1.value, slider2.value, slider3.value, slider4.value)
         let rot = Quaternion(axis: e_x, angle: slider0.value)*Quaternion(axis: e_y, angle: slider1.value)*Quaternion(axis: e_z, angle: slider2.value)
 
         kite.fc.attitudeSetPoint = rot
@@ -251,7 +251,7 @@ class TraceViewController: UIViewController {
     // MARK: - Helpers
 
     private func resetSliders() {
-        (slider0.value, slider1.value, slider2.value, slider3.value) = kite.fc.parameterDefaults
+        (slider0.value, slider1.value, slider2.value, slider3.value, slider4.value) = kite.fc.parameterDefaults
         didSlide()
     }
 }
