@@ -51,7 +51,7 @@
                                             <action selector="didSlide" destination="BYZ-38-t0r" eventType="valueChanged" id="Gxl-NC-dDN"/>
                                         </connections>
                                     </slider>
-                                    <slider opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" minValue="0.0" maxValue="1" translatesAutoresizingMaskIntoConstraints="NO" id="XUE-hG-eVs">
+                                    <slider opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" minValue="-1" maxValue="1" translatesAutoresizingMaskIntoConstraints="NO" id="XUE-hG-eVs">
                                         <rect key="frame" x="38" y="150" width="224" height="31"/>
                                         <connections>
                                             <action selector="didSlide" destination="BYZ-38-t0r" eventType="valueChanged" id="BvF-ua-c49"/>

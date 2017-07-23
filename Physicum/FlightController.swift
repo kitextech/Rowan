@@ -9,7 +9,7 @@
 import UIKit
 
 typealias LogData = (name: String, min: Scalar, max: Scalar, value: Scalar)
-typealias LogVectorData = (name: String, color: UIColor, value: Vector)
+typealias LogVectorData = (name: String, color: UIColor, pos: Vector, value: Vector)
 
 protocol FlightController: class {
     // Inputs
@@ -89,11 +89,11 @@ class AttitudeFlightController: FlightController {
 
     // Static Outputs
     public let parameterLabels: (String?, String?, String?, String?) = ("z", "Kd", "Ki", "Kp")
-    public let parameterDefaults: (Scalar, Scalar, Scalar, Scalar) = (0, -0.9, -1, -1)
+    public let parameterDefaults: (Scalar, Scalar, Scalar, Scalar) = (0, 0, 0, 0)
 
     // Continuous Outputs
-    public var log: [LogData] = [("x", -1, 1, 0), ("y", -1, 1, 0), ("z", -1, 1, 0)]
-    public var vectorLog: [LogVectorData] = [("t", .red, .zero), ("t_xy", .purple, .zero), ("t_z", .orange, .zero)]
+    public var log: [LogData] = [("x", -1, 1, 0), ("y", -1, 1, 0), ("z", -1, 1, 0), ("tx", -1, 1, 0), ("ty", -1, 1, 0), ("tz", -1, 1, 0), ("nrm", 0, 2, 1)]
+    public var vectorLog: [LogVectorData] = [("t", .red, .zero, .zero), ("t_z", .purple, .zero, .zero), ("t_xy", .orange, .zero, .zero), ("w", .green, .zero, .zero)]
     public var thrusts: [Scalar]
 
     // Configuration
@@ -108,44 +108,66 @@ class AttitudeFlightController: FlightController {
     // State Input
     public func updateState(x: State) {
         if let attitudeSetPoint = attitudeSetPoint {
-            let e = attitudeSetPoint*x.q.conjugate
-            let eBody = (e.w > 0 ? 1 : -1)*x.q.conjugate.apply(e.vector)
+            let err = attitudeSetPoint*x.q.conjugate
 
-            log[0].value = eBody.x
-            log[1].value = eBody.y
-            log[2].value = eBody.z
+            let errBodyQ = x.q.conjugate*attitudeSetPoint
+            let errBody = (errBodyQ.w > 0 ? 1 : -1)*errBodyQ.vector
 
-            vectorLog[0].value = 10*eBody
-            vectorLog[1].value = 10*eBody + e_x
-            vectorLog[2].value = 10*eBody + e_y
+            let rateBody = x.q.conjugate.apply(x.l)
+
+            log[0].value = errBody.x
+            log[1].value = errBody.y
+            log[2].value = errBody.z
+
+            // Red
+            vectorLog[0].pos = x.r
+            vectorLog[0].value = err.vector
+
+//            let errZ = err.vector.projected(on: x.q.apply(-e_z))
+//
+            // Purple
+//            vectorLog[1].pos = x.r
+//            vectorLog[1].value = errZ
+//
+            // Orange
+//            vectorLog[2].pos = x.r
+//            vectorLog[2].value = err.vector - errZ
+//
+            // Green
+            vectorLog[3].pos = x.r
+            vectorLog[3].value = x.l
+
+            let pErr = parameters.3*50
+            let pRate = -parameters.2*2
+
+            let torque = -pErr*errBody - pRate*rateBody
+
+            // Orange
+            vectorLog[2].pos = x.r
+            vectorLog[2].value = torque
+
+            log[3].value = torque.x
+            log[4].value = torque.y
+            log[5].value = torque.z
+
+            log[6].value = x.q.scalar*x.q.scalar + x.q.vector.squaredNorm
+
+            let factor: Scalar = 4
+            let overall: Scalar = 0.7
+
+            thrusts = configs.map { config in
+                let pitchAdjustment = (factor - (config.a.x > 0 ? +1 : -1)*torque.y)/factor
+                let rollAdjustment = (factor + (config.a.y > 0 ? +1 : -1)*torque.x)/factor
+                let yawAdjustment = (factor + (config.a.x*config.a.y > 0 ? +1 : -1)*torque.z)/factor
+
+                return overall*pitchAdjustment*rollAdjustment*yawAdjustment
+            }
         }
-
-//        guard let posSetPoint = positionSetPoint else { return }
-//
-//        pid.kd = (parameters.3 + 1)*2
-//        pid.ki = (parameters.2 + 1)*2
-//        pid.kp = (parameters.1 + 1)*2
-//        positionSetPoint?.z = -40*(parameters.0 - 0.5)
-//
-//        let overall = max(0, pid.step(measured: -x.r.z, setPoint: -posSetPoint.z))
-//
-//        let factor: Scalar = 4
-//        let pitchDelta: Scalar = 0
-//        let rollDelta: Scalar = 0
-//        let yawDelta: Scalar = 0
-//
-//        thrusts = configs.map { config in
-//            let pitchAdjustment = (factor + (config.a.x > 0 ? +1 : -1)*pitchDelta)/factor
-//            let rollAdjustment = (factor + (config.a.y > 0 ? +1 : -1)*rollDelta)/factor
-//            let yawAdjustment = (factor + (config.a.x*config.a.y > 0 ? +1 : -1)*yawDelta)/factor
-//
-//            return overall*pitchAdjustment*rollAdjustment*yawAdjustment
-//        }
     }
 
     // MARK: - Helper Variablse
 
-    private var pid: PID = BasicPID()
+    private var pid = BasicPID<Vector>()
 
     // MARK: - Helper Methods
 }
@@ -189,31 +211,15 @@ class HeightFlightController: FlightController {
 
     // MARK: - Helper Variablse
 
-    private var pid: PID = BasicPID()
+    private var pid = BasicPID<Scalar>()
 
     // MARK: - Helper Methods
 }
 
-protocol PID {
-    associatedtype T: VectorType
-    var kp: Scalar { get set }
-    var ki: Scalar { get set }
-    var kd: Scalar { get set }
-
-    mutating func step(measured: T, setPoint: T) -> T
-}
-
-struct BasicPID: PID {
-    var kp: Scalar = 0
-    var ki: Scalar = 0
-    var kd: Scalar = 0
-
-    private var errorSum: Scalar = 0
-    private var previousError: Scalar = 0
-
-    mutating func step(measured: Scalar, setPoint: Scalar) -> Scalar {
+struct BasicPID<T: VectorType> {
+    mutating func step(measured: T, setPoint: T) -> T {
         let error = setPoint - measured
-        errorSum = errorSum + error/10000
+        errorSum = errorSum + (1/10000)*error
 
         let p = kp*error
         let i = -ki*errorSum
@@ -221,10 +227,15 @@ struct BasicPID: PID {
 
         previousError = error
 
-//        print("E: \(error) (\(errorSum)), P: \(p), I: \(i), D: \(d)) -> \(max(p + i + d, 0))")
-
         return p + i + d
     }
+
+    var kp: Scalar = 0
+    var ki: Scalar = 0
+    var kd: Scalar = 0
+
+    private var errorSum: T = .zero
+    private var previousError: T = .zero
 }
 
 protocol VectorType {

@@ -108,7 +108,7 @@ class TraceViewController: UIViewController {
         }
 
 //        addUnary(to: links.dropFirst().dropLast(), u: gravity)
-//        newton.add(force: (0.2*e_z, wing.id, gravityWing))
+        newton.add(force: (.origin, wing.id, gravityWing))
 
         func addSpring(left: Drawable, right: Drawable, offset: (Scalar, Scalar) = (-0.5, 0.5)) {
             let dr = left.position - right.position
@@ -162,6 +162,8 @@ class TraceViewController: UIViewController {
         logView.data = kite.fc.log
         updatePhysics(link.targetTimestamp - link.timestamp)
         kite.fc.updateState(x: newton.states[kite.id]!)
+
+        box.position = newton.states[kite.id]!.r
         debugDraw()
 
         traceView.setNeedsDisplay()
@@ -178,14 +180,16 @@ class TraceViewController: UIViewController {
     }
 
     private func debugDraw() {
-        func color(_ isAggregate: Bool, _ isTorque: Bool) -> UIColor {
-            let base: UIColor = isTorque ? .orange : .blue
-            return isAggregate ? base : base.withAlphaComponent(0.5)
+        let forceDrawables: [ArrowDrawable] = newton.debugEvaluation(debugIds).map { data in
+            let color = (data.isTorque ? UIColor.brown : UIColor.blue).withAlphaComponent(data.isAggregate ? 1 : 0.5)
+            return ArrowDrawable(at: data.r, vector: 0.2*data.vec, color: color)
         }
 
-        traceView.debugDrawables = newton.debugEvaluation(debugIds).map { data in
-            ArrowDrawable(at: data.r, vector: 0.2*data.vec, color: color(data.isAggregate, data.isTorque))
+        let fcDrawables = kite.fc.vectorLog.map { data in
+            ArrowDrawable(at: data.pos, vector: 10*data.value, color: data.color)
         }
+
+        traceView.debugDrawables = forceDrawables + fcDrawables
     }
 
     private func stopDisplayLink() {
@@ -206,9 +210,9 @@ class TraceViewController: UIViewController {
     @IBAction func didSlide() {
         kite.fc.parameters = (slider0.value, slider1.value, slider2.value, slider3.value)
 
-        newton.states[kite.id]?.q = Quaternion(axis: e_y, angle: slider0.value)*Quaternion(axis: e_x, angle: slider1.value)
+//        newton.states[kite.id]?.q = Quaternion(axis: e_y, angle: slider0.value)*Quaternion(axis: e_x, angle: slider1.value)
 
-        let rot = Quaternion(axis: e_y, angle: slider0.value)*Quaternion(axis: e_z, angle: slider2.value)
+        let rot = Quaternion(axis: e_y, angle: slider0.value)*Quaternion(axis: e_x, angle: slider1.value) //*Quaternion(axis: e_z, angle: slider2.value)
 
         kite.fc.attitudeSetPoint = rot
         box.orientation = rot
