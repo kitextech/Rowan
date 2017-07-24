@@ -188,7 +188,7 @@ class TraceViewController: UIViewController {
 
     @objc func step(link: CADisplayLink) {
         logView.data = kite.fc.log
-        updatePhysics(0.1*(link.targetTimestamp - link.timestamp))
+        updatePhysics(1*(link.targetTimestamp - link.timestamp))
         kite.fc.state = newton.states[kite.id]!
 
         box.position = kite.fc.state.r
@@ -199,8 +199,8 @@ class TraceViewController: UIViewController {
     }
 
     private func updatePhysics(_ elapsed: TimeInterval) {
-        for _ in 0..<2 {
-            newton.step(h: 10*Scalar(elapsed))
+        for _ in 0..<5 {
+            newton.step(h: 2*Scalar(elapsed))
         }
 
         for (id, state) in newton.states {
@@ -229,20 +229,19 @@ class TraceViewController: UIViewController {
     // MARK: - User Actions
 
     @IBAction func didChangeXY(_ sender: XYControlView) {
-//        let axis = Vector(-sender.value.y, sender.value.x, 0)
-//        let norm = axis.norm
-//        let orientation = norm > 0 ? Quaternion(axis: axis/norm, angle: norm) : .id
-//        box.orientation = orientation
-//        kite.fc.attitudeSetPoint = orientation
+        let axis = Vector(sender.value.x, sender.value.y, 0)
+        let norm = axis.norm
+        let orientation = norm > 0 ? Quaternion(axis: axis/norm, angle: norm) : .id
+        kite.fc.attitudeSetPoint = orientation
     }
 
     @objc func didSlide() {
         kite.fc.parameterValues = sliders.map { $0.value }
-
-        let rotX = Quaternion(axis: e_x, angle: sliders[0].value)
-        let rotY = Quaternion(axis: e_y, angle: sliders[1].value)
-        let rotZ = Quaternion(axis: e_z, angle: sliders[2].value)
-        kite.fc.attitudeSetPoint = rotX*rotY*rotZ
+//
+//        let rotX = Quaternion(axis: e_x, angle: sliders[0].value)
+//        let rotY = Quaternion(axis: e_y, angle: sliders[1].value)
+//        let rotZ = Quaternion(axis: e_z, angle: sliders[2].value)
+//        kite.fc.attitudeSetPoint = rotX*rotY*rotZ
     }
 
     @IBAction func didPinch(_ sender: UIPinchGestureRecognizer) {

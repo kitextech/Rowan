@@ -68,8 +68,8 @@ class AttitudeFlightController: FlightController {
         let parameters: [Parameter] = [("rx", -1, 1, 0),
                                        ("ry", -1, 1, 0),
                                        ("rz", -1, 1, 0),
-                                       ("P", -10, 10, 0),
-                                       ("D", -10, 10, 0),
+                                       ("P", 0, 100, 50),
+                                       ("D", 0, 100, 50),
                                        ("Perr", -100, 100, 75),
                                        ("Prate", -2, 2, 1)]
         self.parameters = parameters
