@@ -53,9 +53,9 @@
                                         </connections>
                                     </button>
                                     <button opaque="NO" tag="2" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="8Sm-EM-LKi">
-                                        <rect key="frame" x="39" y="75" width="52" height="35"/>
+                                        <rect key="frame" x="43.5" y="75" width="43" height="35"/>
                                         <fontDescription key="fontDescription" type="system" pointSize="19"/>
-                                        <state key="normal" title="Fly up">
+                                        <state key="normal" title="Floor">
                                             <color key="titleColor" white="0.66666666666666663" alpha="1" colorSpace="calibratedWhite"/>
                                         </state>
                                         <connections>
@@ -63,9 +63,9 @@
                                         </connections>
                                     </button>
                                     <button opaque="NO" tag="3" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="5rm-ae-Ybh">
-                                        <rect key="frame" x="15.5" y="110" width="99" height="35"/>
+                                        <rect key="frame" x="36.5" y="110" width="57" height="35"/>
                                         <fontDescription key="fontDescription" type="system" pointSize="19"/>
-                                        <state key="normal" title="Fly to origin">
+                                        <state key="normal" title="Height">
                                             <color key="titleColor" white="0.66666666666666663" alpha="1" colorSpace="calibratedWhite"/>
                                         </state>
                                         <connections>
@@ -73,19 +73,19 @@
                                         </connections>
                                     </button>
                                     <button opaque="NO" tag="4" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="cvx-qn-EY0">
-                                        <rect key="frame" x="27" y="145" width="76" height="35"/>
+                                        <rect key="frame" x="49" y="145" width="32" height="35"/>
                                         <fontDescription key="fontDescription" type="system" pointSize="19"/>
-                                        <state key="normal" title="Fly down">
+                                        <state key="normal" title="Log">
                                             <color key="titleColor" white="0.66666666666666663" alpha="1" colorSpace="calibratedWhite"/>
                                         </state>
                                         <connections>
                                             <action selector="didTapButton:" destination="BYZ-38-t0r" eventType="touchUpInside" id="kzX-uO-J0h"/>
                                         </connections>
                                     </button>
-                                    <button opaque="NO" tag="4" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="4Lg-AH-btw">
-                                        <rect key="frame" x="45" y="188" width="40" height="35"/>
+                                    <button opaque="NO" tag="5" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="4Lg-AH-btw">
+                                        <rect key="frame" x="36" y="188" width="58" height="35"/>
                                         <fontDescription key="fontDescription" type="system" pointSize="19"/>
-                                        <state key="normal" title="Hide">
+                                        <state key="normal" title="Sliders">
                                             <color key="titleColor" white="0.66666666666666663" alpha="1" colorSpace="calibratedWhite"/>
                                         </state>
                                         <connections>
@@ -112,11 +112,8 @@
                                 </constraints>
                             </view>
                             <view userInteractionEnabled="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="OTj-tE-Jvw" userLabel="LogView" customClass="LogView" customModule="Physicum" customModuleProvider="target">
-                                <rect key="frame" x="0.0" y="0.0" width="270" height="360"/>
+                                <rect key="frame" x="0.0" y="0.0" width="600" height="360"/>
                                 <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
-                                <constraints>
-                                    <constraint firstAttribute="width" constant="270" id="cxa-Or-crk"/>
-                                </constraints>
                             </view>
                             <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" distribution="equalSpacing" spacing="15" translatesAutoresizingMaskIntoConstraints="NO" id="Vw7-e1-A5C">
                                 <rect key="frame" x="255" y="555" width="160" height="30"/>
@@ -159,6 +156,7 @@
                             <constraint firstItem="MY2-E8-12L" firstAttribute="height" secondItem="Vw7-e1-A5C" secondAttribute="height" id="14I-nm-fmy"/>
                             <constraint firstItem="OTj-tE-Jvw" firstAttribute="top" secondItem="y3c-jy-aDJ" secondAttribute="bottom" constant="-20" id="4E1-xZ-v1M"/>
                             <constraint firstItem="wfy-db-euE" firstAttribute="top" secondItem="WYl-UC-w26" secondAttribute="bottom" id="7sj-Ca-5NJ"/>
+                            <constraint firstItem="OTj-tE-Jvw" firstAttribute="trailing" secondItem="lpY-SJ-jHE" secondAttribute="trailing" id="BPu-WL-NDS"/>
                             <constraint firstItem="lpY-SJ-jHE" firstAttribute="top" secondItem="y3c-jy-aDJ" secondAttribute="bottom" constant="-20" id="IIj-8n-kUP"/>
                             <constraint firstItem="wfy-db-euE" firstAttribute="top" secondItem="MY2-E8-12L" secondAttribute="bottom" constant="15" id="KgS-Hj-n7L"/>
                             <constraint firstItem="WYl-UC-w26" firstAttribute="leading" secondItem="8bC-Xf-vdC" secondAttribute="leading" id="MWC-28-bGP"/>

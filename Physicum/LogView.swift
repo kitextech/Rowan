@@ -17,15 +17,15 @@ class LogView: UIView {
 
     private var labels: [(name: UILabel, min: UILabel, max: UILabel, value: UILabel)] = []
     private var bars: [UIView] = []
-    private let font = UIFont.systemFont(ofSize: 12)
+    private let font = UIFont.systemFont(ofSize: 14)
 
     private let topMargin: CGFloat = 20
     private let margin: CGFloat = 5
     private let inset: CGFloat = 2
-    private let rowHeight: CGFloat = 25
-    private let nameWidth: CGFloat = 40
-    private let valueWidth: CGFloat = 45
-    private let minMaxWidth: CGFloat = 35
+    private let rowHeight: CGFloat = 30
+    private let nameWidth: CGFloat = 60
+    private let valueWidth: CGFloat = 50
+    private let minMaxWidth: CGFloat = 50
     private var barMin: CGFloat { return 3*margin + nameWidth + valueWidth }
     private var barMax: CGFloat { return bounds.width - margin }
     private var barMid: CGFloat { return (barMin + barMax)/2 }

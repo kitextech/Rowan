@@ -104,12 +104,12 @@ class TraceViewController: UIViewController {
 //        addUnary(to: links.dropFirst().dropLast(), u: gravity)
         newton.add(force: (.origin, wing.id, gravityWing))
 
-        func addSpring(left: Drawable, right: Drawable, offset: (Scalar, Scalar) = (-0.5, 0.5)) {
-            let dr = left.position - right.position
-            newton.add(force: (offset.0*dr, left.id, right.id, spring(l: 0, plus: true)))
-            newton.add(force: (offset.1*dr, right.id, left.id, spring(l: 0, plus: false)))
-        }
-
+//        func addSpring(left: Drawable, right: Drawable, offset: (Scalar, Scalar) = (-0.5, 0.5)) {
+//            let dr = left.position - right.position
+//            newton.add(force: (offset.0*dr, left.id, right.id, spring(l: 0, plus: true)))
+//            newton.add(force: (offset.1*dr, right.id, left.id, spring(l: 0, plus: false)))
+//        }
+//
 //        addSpring(left: link1, right: link2)
 //        addSpring(left: link2, right: link3)
 //        addSpring(left: link3, right: link4)
@@ -263,11 +263,14 @@ class TraceViewController: UIViewController {
         case 1:
             resetSliders()
         case 2:
-            didSlide()
+            traceView.drawFloor = !traceView.drawFloor
         case 3:
-            didSlide()
+            traceView.drawHeight = !traceView.drawHeight
         case 4:
-            didSlide()
+            logView.isHidden = !logView.isHidden
+        case 5:
+            sliderStack.isHidden = !sliderStack.isHidden
+            labelStack.isHidden = sliderStack.isHidden
         default:
             fatalError()
         }
@@ -329,6 +332,7 @@ extension UIStackView {
         let views = arrangedSubviews
         for view in views {
             removeArrangedSubview(view)
+            view.removeFromSuperview()
         }
     }
 }

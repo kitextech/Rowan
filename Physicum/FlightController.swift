@@ -47,29 +47,15 @@ class AttitudeFlightController: FlightController {
     public var attitudeSetPoint: Quaternion? = nil
 
     // Parameters
-    public let parameters: [Parameter] = [("rx", -1, 1, 0),
-                                          ("ry", -1, 1, 0),
-                                          ("rz", -1, 1, 0),
-                                          ("Perr", -100, 100, 0),
-                                          ("Prate", -2, 2, 0)]
+    public let parameters: [Parameter]
     public var parameterValues: [Scalar]
 
     // Output
     public var thrusts: [Scalar]
 
     // Debugging and logging
-    public var log: [LogData] = [("x", -1, 1, 0),
-                                 ("y", -1, 1, 0),
-                                 ("z", -1, 1, 0),
-                                 ("tx", -1, 1, 0),
-                                 ("ty", -1, 1, 0),
-                                 ("tz", -1, 1, 0),
-                                 ("nrm", -1, 1, 0)]
-
-    public var vectorLog: [LogVectorData] = [("t", .red, .zero, .zero),
-                                             ("t_z", .purple, .zero, .zero),
-                                             ("t_xy", .orange, .zero, .zero),
-                                             ("w", .green, .zero, .zero)]
+    public var log: [LogData]
+    public var vectorLog: [LogVectorData]
 
     // Configuration
     public let configs: [MotorConfig]
@@ -78,7 +64,30 @@ class AttitudeFlightController: FlightController {
     required init(configs: [MotorConfig]) {
         self.configs = configs
         self.thrusts = Array(repeating: 0, count: configs.count)
+
+        let parameters: [Parameter] = [("rx", -1, 1, 0),
+                                       ("ry", -1, 1, 0),
+                                       ("rz", -1, 1, 0),
+                                       ("P", -10, 10, 0),
+                                       ("D", -10, 10, 0),
+                                       ("Perr", -100, 100, 75),
+                                       ("Prate", -2, 2, 1)]
+        self.parameters = parameters
         self.parameterValues = parameters.map { $0.default }
+
+        self.log = [("err x", -1, 1, 0),
+                    ("err y", -1, 1, 0),
+                    ("err z", -1, 1, 0),
+                    ("err w", -1, 1, 0),
+                    ("t x", -1, 1, 0),
+                    ("t y", -1, 1, 0),
+                    ("t z", -2, 2, 0),
+                    ("adj z", -2, 2, 0)]
+
+        self.vectorLog = [("t", .red, .zero, .zero),
+                          ("t_z", .purple, .zero, .zero),
+                          ("t_xy", .orange, .zero, .zero),
+                          ("w", .green, .zero, .zero)]
     }
 
     // MARK: - Private
@@ -92,62 +101,62 @@ class AttitudeFlightController: FlightController {
 
             let rateBody = state.q.conjugate.apply(state.l)
 
-            log[0].value = errBody.x
-            log[1].value = errBody.y
-            log[2].value = errBody.z
+            pid.kp = parameterValues[3]
+            pid.kd = parameterValues[4]
 
-            // Red
-            vectorLog[0].pos = state.r
-            vectorLog[0].value = err.vector
+            let zadj = -pid.step(measured: errBody.z, setPoint: 0)
 
-//            let errZ = err.vector.projected(on: x.q.apply(-e_z))
-//
-            // Purple
-//            vectorLog[1].pos = x.r
-//            vectorLog[1].value = errZ
-//
-            // Orange
-//            vectorLog[2].pos = x.r
-//            vectorLog[2].value = err.vector - errZ
-//
-            // Green
-            vectorLog[3].pos = state.r
-            vectorLog[3].value = state.l
-
-            let pErr = parameterValues[3]
-            let pRate = -parameterValues[4]
+            let pErr = parameterValues[5]
+            let pRate = -parameterValues[6]
 
             let torque = -pErr*errBody - pRate*rateBody
 
-            // Orange
-            vectorLog[2].pos = state.r
-            vectorLog[2].value = torque
-
-            log[3].value = torque.x
-            log[4].value = torque.y
-            log[5].value = torque.z
-
-            log[6].value = (state.q.squaredNorm - 1)*10
+//            let torqueXY = torque - torque.z
 
             let factor: Scalar = 4
             let overall: Scalar = 0.7
 
-            let torqueZ = torque.projected(on: -e_z)
-            let torqueXY = torque - torqueZ
-
             thrusts = configs.map { config in
                 let pitchAdjustment = (factor - (config.a.x > 0 ? +1 : -1)*torque.y)/factor
                 let rollAdjustment = (factor + (config.a.y > 0 ? +1 : -1)*torque.x)/factor
-                let yawAdjustment = (factor + (config.a.x*config.a.y > 0 ? +1 : -1)*torqueZ.norm)/factor
+                let yawAdjustment = (factor + (config.a.x*config.a.y > 0 ? +1 : -1)*zadj)/factor
 
-                return overall*pitchAdjustment*rollAdjustment*yawAdjustment
+                return min(1, max(0, overall*pitchAdjustment*rollAdjustment*yawAdjustment))
+//                return min(1, max(0, overall*yawAdjustment))
             }
+
+            log[0].value = errBody.x
+            log[1].value = errBody.y
+            log[2].value = errBody.z
+            log[3].value = errBodyQ.w
+
+            log[4].value = torque.x
+            log[5].value = torque.y
+            log[6].value = torque.z
+            log[7].value = zadj
+
+            // Red
+            vectorLog[0].pos = state.r
+            vectorLog[0].value = err.vector
+            // Purple
+            //            vectorLog[1].pos = x.r
+            //            vectorLog[1].value = errZ
+            // Orange
+            //            vectorLog[2].pos = x.r
+            //            vectorLog[2].value = err.vector - errZ
+            vectorLog[2].pos = state.r
+            vectorLog[2].value = torque
+
+            // Green
+            vectorLog[3].pos = state.r
+            vectorLog[3].value = 1/25*state.l
+
         }
     }
 
     // MARK: - Helper Variablse
 
-    private var pid = BasicPID<Vector>()
+    private var pid = BasicPID<Scalar>()
 
     // MARK: - Helper Methods
 }
