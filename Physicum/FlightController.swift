@@ -72,6 +72,7 @@ class AttitudeFlightController: FlightController {
                                        ("D", 0, 100, 50),
                                        ("Perr", -100, 100, 75),
                                        ("Prate", -2, 2, 1)]
+
         self.parameters = parameters
         self.parameterValues = parameters.map { $0.default }
 
@@ -88,6 +89,7 @@ class AttitudeFlightController: FlightController {
                           ("t_z", .purple, .zero, .zero),
                           ("t_xy", .orange, .zero, .zero),
                           ("w", .green, .zero, .zero)]
+
     }
 
     // MARK: - Private
@@ -98,7 +100,6 @@ class AttitudeFlightController: FlightController {
 
             let errBodyQ = state.q.conjugate*attitudeSetPoint
             let errBody = (errBodyQ.w > 0 ? 1 : -1)*errBodyQ.vector
-
             let rateBody = state.q.conjugate.apply(state.l)
 
             pid.kp = parameterValues[3]
@@ -122,8 +123,10 @@ class AttitudeFlightController: FlightController {
                 let yawAdjustment = (factor + (config.a.x*config.a.y > 0 ? +1 : -1)*zadj)/factor
 
                 return min(1, max(0, overall*pitchAdjustment*rollAdjustment*yawAdjustment))
-//                return min(1, max(0, overall*yawAdjustment))
             }
+
+
+            // Logging
 
             log[0].value = errBody.x
             log[1].value = errBody.y
@@ -136,8 +139,8 @@ class AttitudeFlightController: FlightController {
             log[7].value = zadj
 
             // Red
-            vectorLog[0].pos = state.r
-            vectorLog[0].value = err.vector
+//            vectorLog[0].pos = state.r
+//            vectorLog[0].value = err.vector
             // Purple
             //            vectorLog[1].pos = x.r
             //            vectorLog[1].value = errZ
@@ -150,7 +153,6 @@ class AttitudeFlightController: FlightController {
             // Green
             vectorLog[3].pos = state.r
             vectorLog[3].value = 1/25*state.l
-
         }
     }
 
@@ -240,7 +242,6 @@ extension Scalar: VectorType {
 }
 
 extension Vector: VectorType { }
-
 
 
 

@@ -92,7 +92,7 @@ class TraceViewController: UIViewController {
         kite.motorTorques.forEach(newton.add)
 
         debugIds.append(wing.id)
-        traceView.trackedId = wing.id
+//        traceView.trackedId = wing.id
 
         let gravity: (State) -> Vector = { _ in 1*e_z }
         let gravityWing: (State) -> Vector = { _ in 50*e_z }
@@ -237,7 +237,7 @@ class TraceViewController: UIViewController {
 
     @objc func didSlide() {
         kite.fc.parameterValues = sliders.map { $0.value }
-//
+
 //        let rotX = Quaternion(axis: e_x, angle: sliders[0].value)
 //        let rotY = Quaternion(axis: e_y, angle: sliders[1].value)
 //        let rotZ = Quaternion(axis: e_z, angle: sliders[2].value)
@@ -335,3 +335,4 @@ extension UIStackView {
         }
     }
 }
+
